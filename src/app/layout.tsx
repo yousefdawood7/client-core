@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Roboto } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import "./globals.css";
 
 const fontSans = Inter({
   variable: "--font-sans",
