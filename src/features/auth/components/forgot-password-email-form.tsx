@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import FormField from "@/features/auth/components/form-field";
 import {
@@ -29,15 +30,20 @@ export default function ForgotPasswordEmailForm({
   const onSubmit: SubmitHandler<ForgotPasswordSchema> = async (data) => {
     setSubmitError(null);
     try {
-      const { error } = await authClient.emailOtp.sendVerificationOtp({
+      await authClient.emailOtp.sendVerificationOtp({
         email: data.email,
         type: "forget-password",
+        fetchOptions: {
+          onError: (error) => {
+            toast.error("Failed to send reset code. Please try again.");
+            setSubmitError(error.error.message || "Failed to send reset code.");
+          },
+          onSuccess: () => {
+            toast.success("Reset code sent successfully!");
+            onSuccess(data.email);
+          },
+        },
       });
-      if (error) {
-        setSubmitError(error.message || "Failed to send reset code.");
-        return;
-      }
-      onSuccess(data.email);
     } catch (error: unknown) {
       const message =
         error instanceof Error ? error.message : "An unexpected error occurred";
@@ -54,8 +60,8 @@ export default function ForgotPasswordEmailForm({
             Forgot password?
           </h2>
           <p className="text-xs text-muted-foreground">
-            No worries, enter your email address and we will send you a
-            reset code.
+            No worries, enter your email address and we will send you a reset
+            code.
           </p>
         </div>
 
