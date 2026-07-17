@@ -10,8 +10,6 @@ type User = {
 };
 
 
-
-
 export const columns: ColumnDef<User>[] = [
     {
         accessorKey: "id",
@@ -89,5 +87,7 @@ function page() {
         </div>
     )
 }
+
+
 
 export default page

@@ -57,8 +57,15 @@ export default function DataTable<TData>({
             <TableRow key={row.id}
               data-state={row.getIsSelected() ? "selected" : undefined}
               onClick={row.getToggleSelectedHandler()}
-
+              tabIndex={0}
               className="cursor-pointer"
+              onKeyDown={(e) => {
+                e.preventDefault();
+                if (e.key === "Enter") {
+                  row.toggleSelected();
+                }
+              }}
+              aria-selected={row.getIsSelected()}
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
