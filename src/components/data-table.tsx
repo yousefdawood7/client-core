@@ -42,9 +42,9 @@ export default function DataTable<TData>({
                 {header.isPlaceholder
                   ? null
                   : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )}
               </TableHead>
             ))}
           </TableRow>
@@ -54,7 +54,12 @@ export default function DataTable<TData>({
       <TableBody>
         {table.getRowModel().rows.length ? (
           table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id}
+              data-state={row.getIsSelected() ? "selected" : undefined}
+              onClick={row.getToggleSelectedHandler()}
+
+              className="cursor-pointer"
+            >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
