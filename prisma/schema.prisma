@@ -17,6 +17,12 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  
+  // admin plugin fields
+  role          String?
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
 
   @@unique([email])
   @@map("user")

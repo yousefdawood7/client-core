@@ -1,11 +1,11 @@
-import { QuickProfile } from "./types";
+import { QuickProfile } from "@/lib/types"; 
 
 export const QUICK_PROFILES: QuickProfile[] = [
   {
     id: "admin",
     name: "Admin",
     role: "SYSTEM ADMIN",
-    email: "admin@crmpro.com",
+    email: "admin@company.com",
     password: "adminpassword123",
   },
   {
