@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import DataTable from "@/components/data-table";
+import { DataTable } from "@/components/data-table";
 
 type User = {
   id: number;
