@@ -19,7 +19,6 @@ model User {
   accounts      Account[]
 
   // admin plugin fields
-
   role               String?
   banned             Boolean?
   banReason          String?
