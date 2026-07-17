@@ -1,27 +1,24 @@
 "use client";
 import { useState } from "react";
-import { SubmitHandler,useForm } from "react-hook-form";
+import { Controller, FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldError,FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { QuickProfile } from "@/lib/types";
 
 import { QUICK_PROFILES } from "../constants";
+import { LoginSchema, loginSchema } from "../schemas";
 import { signIn } from "../sign-in";
-import { LoginSchema,loginSchema, QuickProfile } from "../types";
+import FormField from "./form-field";
 
 function LoginForm() {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginSchema>({
+  const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: true,
     },
   });
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(
@@ -32,8 +29,8 @@ function LoginForm() {
   const handleQuickLogin = (profile: QuickProfile) => {
     setSubmitError(null);
     setSelectedProfileId(profile.id);
-    setValue("email", profile.email, { shouldValidate: true });
-    setValue("password", profile.password, { shouldValidate: true });
+    form.setValue("email", profile.email, { shouldValidate: true });
+    form.setValue("password", profile.password, { shouldValidate: true });
   };
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
@@ -44,7 +41,8 @@ function LoginForm() {
         setSubmitError(res.error.message || "Invalid credentials");
       }
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "An unexpected error occurred";
+      const message =
+        error instanceof Error ? error.message : "An unexpected error occurred";
       setSubmitError(message);
       console.error(error);
     }
@@ -52,108 +50,107 @@ function LoginForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Email field */}
-        <Field data-invalid={!!errors.email}>
-          <FieldLabel htmlFor="email">
-            Email address<span className="text-destructive ml-0.5">*</span>
-          </FieldLabel>
-          <Input
-            id="email"
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          {/* Email field */}
+          <FormField
+            label="Email"
+            name="email"
             type="email"
             placeholder="you@company.com"
-            className="h-10 text-[13px] border-border"
-            {...register("email")}
           />
-          <FieldError>{errors.email?.message}</FieldError>
-        </Field>
 
-        {/* Password field */}
-        <Field data-invalid={!!errors.password}>
-          <FieldLabel htmlFor="password">
-            Password<span className="text-destructive ml-0.5">*</span>
-          </FieldLabel>
-          <Input
-            id="password"
+          {/* Password field */}
+          <FormField
+            label="Password"
+            name="password"
             type="password"
             placeholder="••••••••"
-            className="h-10 text-[13px] border-border"
-            {...register("password")}
           />
-          <FieldError>{errors.password?.message}</FieldError>
-        </Field>
 
-        {/* Remember me & Forgot Password */}
-        <div className="flex items-center justify-between text-xs pt-1">
-          <div className="flex items-center gap-2">
-            <Checkbox id="remember-me" defaultChecked />
-            <label
-              htmlFor="remember-me"
-              className="font-medium text-foreground cursor-pointer select-none"
+          {/* Remember me & Forgot Password */}
+          <div className="flex items-center justify-between text-xs pt-1">
+            <div className="flex items-center gap-2">
+              <Controller
+                name="rememberMe"
+                control={form.control}
+                render={({ field }) => (
+                  <Checkbox
+                    id="remember-me"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={field.disabled}
+                  />
+                )}
+              />
+              <label
+                htmlFor="remember-me"
+                className="font-medium text-foreground cursor-pointer select-none"
+              >
+                Remember me
+              </label>
+            </div>
+            <Link
+              href="/forgot-password"
+              className="font-semibold text-primary hover:text-primary/95 hover:underline"
             >
-              Remember me
-            </label>
+              Forgot password?
+            </Link>
           </div>
-          <a
-            href="#forgot-password"
-            className="font-semibold text-primary hover:text-primary/95 hover:underline"
+
+          {/* Error Message */}
+          {submitError && (
+            <div className="text-xs font-semibold text-destructive bg-destructive/10 p-3 rounded-lg border border-destructive/20 text-center">
+              {submitError}
+            </div>
+          )}
+
+          {/* Sign In Button */}
+          <Button
+            type="submit"
+            size="lg"
+            disabled={form.formState.isSubmitting}
+            className="w-full font-semibold cursor-pointer rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-[14px] shadow-sm transition-all focus-visible:ring-2 active:scale-[0.98]"
           >
-            Forgot password?
-          </a>
-        </div>
-
-        {/* Error Message */}
-        {submitError && (
-          <div className="text-xs font-semibold text-destructive bg-destructive/10 p-3 rounded-lg border border-destructive/20 text-center">
-            {submitError}
+            {form.formState.isSubmitting ? "Signing in..." : "Sign in"}
+          </Button>
+        </form>
+        {/* Divider / Quick Login Title */}
+        <div className="relative my-6 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border" />
           </div>
-        )}
-
-        {/* Sign In Button */}
-        <Button
-          type="submit"
-          size="lg"
-          disabled={isSubmitting}
-          className="w-full font-semibold cursor-pointer rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-[14px] shadow-sm transition-all focus-visible:ring-2 active:scale-[0.98]"
-        >
-          {isSubmitting ? "Signing in..." : "Sign in"}
-        </Button>
-      </form>
-      {/* Divider / Quick Login Title */}
-      <div className="relative my-6 flex items-center justify-center">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-border" />
+          <span className="relative bg-background px-3 text-[11px] font-bold tracking-wider text-muted-foreground">
+            QUICK LOGIN
+          </span>
         </div>
-        <span className="relative bg-background px-3 text-[11px] font-bold tracking-wider text-muted-foreground">
-          QUICK LOGIN
-        </span>
-      </div>
 
-      {/* Quick Login Grid */}
-      <div className="grid grid-cols-2 gap-3">
-        {QUICK_PROFILES.map((profile: QuickProfile) => {
-          const isSelected = selectedProfileId === profile.id;
-          return (
-            <button
-              key={profile.id}
-              type="button"
-              onClick={() => handleQuickLogin(profile)}
-              className={`flex flex-col items-start gap-0.5 rounded-xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
-                isSelected
-                  ? "border-primary bg-primary/5 dark:bg-primary/10 shadow-sm scale-[1.02]"
-                  : "border-border"
-              }`}
-            >
-              <span className="text-[12px] font-bold text-foreground">
-                {profile.name}
-              </span>
-              <span className="text-[10px] font-bold tracking-wider text-muted-foreground">
-                {profile.role}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+        {/* Quick Login Grid */}
+        <div className="grid grid-cols-2 gap-3">
+          {QUICK_PROFILES.map((profile: QuickProfile) => {
+            const isSelected = selectedProfileId === profile.id;
+            return (
+              <button
+                key={profile.id}
+                type="button"
+                onClick={() => handleQuickLogin(profile)}
+                className={`flex flex-col items-start gap-0.5 rounded-xl border p-3.5 text-left transition-all duration-200 cursor-pointer ${
+                  isSelected
+                    ? "border-primary bg-primary/5 dark:bg-primary/10 shadow-sm scale-[1.02]"
+                    : "border-border"
+                }`}
+              >
+                <span className="text-[12px] font-bold text-foreground">
+                  {profile.name}
+                </span>
+                <span className="text-[10px] font-bold tracking-wider text-muted-foreground">
+                  {profile.role}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </FormProvider>
     </>
   );
 }

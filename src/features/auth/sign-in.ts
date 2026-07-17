@@ -1,23 +1,20 @@
 "use client";
 
+import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 
-import { LoginSchema } from "./types";
+import { LoginSchema } from "./schemas";
 
-export async function signIn({ email, password }: LoginSchema) {
-  const { data, error } = await authClient.signIn.email(
-    {
-      email,
-      password,
-      callbackURL: "/dashboard",
-      rememberMe: true,
-    },
-    {
-      onError: ({ error }) => {
-        throw new Error(error.message);
+export async function signIn({ email, password, rememberMe }: LoginSchema) {
+  return await authClient.signIn.email({
+    email,
+    password,
+    callbackURL: "/dashboard",
+    rememberMe,
+    fetchOptions: {
+      onSuccess: () => {
+        toast.success("Signed in successfully");
       },
     },
-  );
-
-  return { data, error };
+  });
 }
