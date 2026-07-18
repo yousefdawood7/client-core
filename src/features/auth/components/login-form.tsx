@@ -1,6 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Controller, FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Controller,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -9,8 +14,8 @@ import { QuickProfile } from "@/lib/types";
 
 import { QUICK_PROFILES } from "../constants";
 import { LoginSchema, loginSchema } from "../schemas";
-import { signIn } from "../sign-in";
 import FormField from "@/components/ui/form-field";
+import { useSignin } from "@/features/auth/hooks/useSignin";
 
 function LoginForm() {
   const form = useForm<LoginSchema>({
@@ -25,6 +30,8 @@ function LoginForm() {
     null,
   );
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const signIn = useSignin();
 
   const handleQuickLogin = (profile: QuickProfile) => {
     setSubmitError(null);
