@@ -21,6 +21,7 @@ export default function UpdateInfoForm({
 
   const form = useForm<UpdateProfileSchema>({
     resolver: zodResolver(updateProfileSchema),
+    mode: "onChange",
     defaultValues: {
       name: name ?? "",
       email: email ?? "",

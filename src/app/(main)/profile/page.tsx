@@ -14,8 +14,6 @@ export default async function ProfilePage() {
 
   const user = session?.user;
 
-  console.log("Current user session:", user);
-
   return (
     <PageContainer title="My Profile" subtitle="Manage your account settings">
       <div className="flex flex-col gap-6">
