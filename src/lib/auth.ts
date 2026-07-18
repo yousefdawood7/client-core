@@ -1,12 +1,14 @@
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 import { betterAuth } from "better-auth";
+
+import { nextCookies } from "better-auth/next-js" //
 import { admin, emailOTP } from "better-auth/plugins";
 import AuthEmail from "@/features/auth/components/email-templates";
 import { resend } from "@/lib/resend";
 
 import { env } from "./env";
 import { prisma } from "./prisma";
-import { nextCookies } from "better-auth/next-js";
+
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -66,6 +68,7 @@ export const auth = betterAuth({
 
   plugins: [
     admin(),
+    nextCookies(),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         if (process.env.NODE_ENV !== "production") {
