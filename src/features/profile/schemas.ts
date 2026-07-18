@@ -22,7 +22,6 @@ export const forgotPasswordSchema = z.object({
 
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 
-
 export const resetPasswordSchema = z.object({
   password: z
     .string("Password is required")
@@ -31,35 +30,21 @@ export const resetPasswordSchema = z.object({
 
 export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
 
-
 // Create User Schema
 
-export const createUserSchema = z
-  .object({
-    name: z
-      .string()
-      .min(3, { message: "Name must be at least 3 characters" }),
+export const createUserSchema = z.object({
+  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
 
-    email: z.email({
-      message: "Invalid email address",
-    }),
+  email: z.email({
+    message: "Invalid email address",
+  }),
 
-    password: z
-      .string()
-      .min(8, {
-        message: "Password must be at least 8 characters",
-      }),
+  password: z.string().min(8, {
+    message: "Password must be at least 8 characters",
+  }),
 
-    confirmPassword: z
-      .string()
-      .min(8, {
-        message: "Password must be at least 8 characters",
-      }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+  role: z.enum(["Admin", "Head", "Sales", "Agent", "Lead"]),
+});
 
 export type CreateUserSchema = z.infer<typeof createUserSchema>;
 
@@ -67,5 +52,5 @@ export const createUserDefaultValues: CreateUserSchema = {
   name: "",
   email: "",
   password: "",
-  confirmPassword: "",
+  role: "Admin",
 };

@@ -51,15 +51,8 @@ export const createUserSchema = z
         message: "Password must be at least 8 characters",
       }),
 
-    confirmPassword: z
-      .string("Password is required")
-      .min(8, {
-        message: "Password must be at least 8 characters",
-      }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
+    role: z.enum(["Admin", "Head", "Sales", "Agent", "Lead"]
+    ),
   });
 
 export type CreateUserSchema = z.infer<typeof createUserSchema>;
@@ -68,5 +61,5 @@ export const createUserDefaultValues: CreateUserSchema = {
   name: "",
   email: "",
   password: "",
-  confirmPassword: "",
+  role:"Admin",
 };
