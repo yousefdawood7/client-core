@@ -1,5 +1,5 @@
 import { prismaAdapter } from "@better-auth/prisma-adapter";
-import { betterAuth } from "better-auth";
+import { APIError, betterAuth } from "better-auth";
 import { admin, emailOTP } from "better-auth/plugins";
 import AuthEmail from "@/features/auth/components/email-templates";
 import { resend } from "@/lib/resend";
@@ -7,6 +7,8 @@ import { resend } from "@/lib/resend";
 import { env } from "./env";
 import { prisma } from "./prisma";
 import { nextCookies } from "better-auth/next-js";
+import { createAuthMiddleware } from "better-auth/api";
+import { isEmailExist } from "@/features/auth/services/isEmailExist";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -71,5 +73,17 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false,
     minPasswordLength: 8,
+  },
+
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      const { email, type } = ctx.body;
+      // prettier-ignore
+      if (type !== "forget-password")
+        return;
+      if (!(await isEmailExist(email))) {
+        throw new APIError("BAD_REQUEST", { message: "Email does not exist" });
+      }
+    }),
   },
 });
