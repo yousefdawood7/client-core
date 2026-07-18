@@ -10,7 +10,7 @@ import { QuickProfile } from "@/lib/types";
 import { QUICK_PROFILES } from "../constants";
 import { LoginSchema, loginSchema } from "../schemas";
 import { signIn } from "../sign-in";
-import FormField from "./form-field";
+import FormField from "@/components/ui/form-field";
 
 function LoginForm() {
   const form = useForm<LoginSchema>({

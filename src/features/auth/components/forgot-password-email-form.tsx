@@ -4,7 +4,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import FormField from "@/features/auth/components/form-field";
+import FormField from "@/components/ui/form-field";
 import {
   ForgotPasswordSchema,
   forgotPasswordSchema,
