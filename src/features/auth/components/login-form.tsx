@@ -16,6 +16,7 @@ import { QUICK_PROFILES } from "../constants";
 import { LoginSchema, loginSchema } from "../schemas";
 import FormField from "@/components/ui/form-field";
 import { useSignin } from "@/features/auth/hooks/useSignin";
+import { Label } from "@/components/ui/label";
 
 function LoginForm() {
   const form = useForm<LoginSchema>({
@@ -90,12 +91,12 @@ function LoginForm() {
                   />
                 )}
               />
-              <label
+              <Label
                 htmlFor="remember-me"
                 className="font-medium text-foreground cursor-pointer select-none"
               >
                 Remember me
-              </label>
+              </Label>
             </div>
             <Link
               href="/forgot-password"

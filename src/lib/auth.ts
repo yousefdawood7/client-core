@@ -15,52 +15,32 @@ export const auth = betterAuth({
   user: {
     changeEmail: {
       enabled: true,
-      sendChangeEmailConfirmation: async ({ user, newEmail, url, token }, request) => {
-        try {
-          const { data, error } = await resend.emails.send({
-            from: env.EMAIL_FROM,
-            to: user.email,
-            subject: "Change Email Confirmation",
-            react: AuthEmail({
-              url,
-              type: "change-email",
-              newEmail,
-            }),
-          });
-  
-          if (error) {
-            console.error("Resend API error:", error);
-          } else {
-            console.log("Resend email sent successfully:", data);
-          }
-        } catch (e) {
-          console.error("Failed to send OTP via Resend:", e);
-        }
-      }
+      sendChangeEmailConfirmation: async ({ user, newEmail, url }) => {
+        void resend.emails.send({
+          from: env.EMAIL_FROM,
+          to: user.email,
+          subject: "Change Email Confirmation",
+          react: AuthEmail({
+            url,
+            type: "change-email",
+            newEmail,
+          }),
+        });
+      },
     },
   },
 
   emailVerification: {
-    sendVerificationEmail: async ({ user, url, token }, request) => {
-      try {
-        const { data, error } = await resend.emails.send({
-          from: env.EMAIL_FROM,
-          to: user.email,
-          subject: "Verify your email address",
-          react: AuthEmail({
-            url,
-            type: "email-verification",
-          }),
-        });
-
-        if (error) {
-          console.error("Resend API error:", error);
-        } else {
-          console.log("Resend email sent successfully:", data);
-        }
-      } catch (e) {
-        console.error("Failed to send verification email via Resend:", e);
-      }
+    sendVerificationEmail: async ({ user, url }) => {
+      void resend.emails.send({
+        from: env.EMAIL_FROM,
+        to: user.email,
+        subject: "Verify your email address",
+        react: AuthEmail({
+          url,
+          type: "email-verification",
+        }),
+      });
     },
   },
 
@@ -72,26 +52,16 @@ export const auth = betterAuth({
           console.log(`[DEV-ONLY] OTP Code for ${email} (${type}): ${otp}`);
         }
 
-        try {
-          const { data, error } = await resend.emails.send({
-            from: env.EMAIL_FROM,
-            to: email,
-            subject:
-              type === "forget-password" ? "Reset your password" : "OTP Code",
-            react: AuthEmail({
-              otp,
-              type,
-            }),
-          });
-
-          if (error) {
-            console.error("Resend API error:", error);
-          } else {
-            console.log("Resend email sent successfully:", data);
-          }
-        } catch (e) {
-          console.error("Failed to send OTP via Resend:", e);
-        }
+        void resend.emails.send({
+          from: env.EMAIL_FROM,
+          to: email,
+          subject:
+            type === "forget-password" ? "Reset your password" : "OTP Code",
+          react: AuthEmail({
+            otp,
+            type,
+          }),
+        });
       },
     }),
     nextCookies(),
