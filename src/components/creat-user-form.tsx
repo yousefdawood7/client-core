@@ -3,7 +3,6 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-
 import { authClient } from "@/lib/auth-client";
 
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
   type CreateUserSchema,
 } from "../features/profile/schemas";
 import FormField from "./ui/form-field";
+import { toast } from "sonner";
 
 export default function CreateUserForm() {
   const methods = useForm<CreateUserSchema>({
@@ -23,27 +23,26 @@ export default function CreateUserForm() {
     mode: "onTouched",
   });
 
-async function session() {
-  const session = await authClient.getSession();
-  return console.log(session);
-} 
-
-session();
-
   const onSubmit: SubmitHandler<CreateUserSchema> = async (data) => {
-    const { data: newUser, error } = await authClient.admin.createUser({
+    await authClient.admin.createUser({
       name: data.name,
       email: data.email,
       password: data.password,
+
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success("User created successfully");
+          methods.reset();
+        },
+        onError: (error) => {
+          if (error.error.code === "YOU_ARE_NOT_ALLOWED_TO_CREATE_USERS") {
+            toast.error("You are not allowed to create users");
+            return;
+          }
+          toast.error("Failed to create user");
+        },
+      },
     });
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    console.log(newUser);
-    methods.reset();
   };
 
   return (
