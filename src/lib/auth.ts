@@ -79,10 +79,10 @@ export const auth = betterAuth({
 
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
-      const { email, type } = ctx.body;
       // prettier-ignore
-      if (type !== "forget-password")
-        return;
+      console.log(ctx.path);
+      if (ctx.path !== "/email-otp/send-verification-otp") return;
+      const { email } = ctx.body;
       if (!(await isEmailExist(email))) {
         throw new APIError("BAD_REQUEST", { message: "Email does not exist" });
       }
