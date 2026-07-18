@@ -7,45 +7,56 @@ import {
   Heading,
   Hr,
   Html,
+  Link,
   Preview,
   Row,
   Section,
   Text,
 } from "react-email";
 
-export interface OtpEmailProps {
-  otp: string;
+export interface AuthEmailProps {
   type: "change-email" | "email-verification" | "forget-password" | "sign-in";
+  otp?: string;
+  url?: string;
+  newEmail?: string;
 }
 
-export default function OtpEmail({ otp, type }: OtpEmailProps) {
+export default function AuthEmail({ otp, url, type, newEmail }: AuthEmailProps) {
   const isForgetPassword = type === "forget-password";
+  const isEmailVerification = type === "email-verification";
+  const isChangeEmail = type === "change-email";
 
-  const title = isForgetPassword
-    ? "Reset your password"
-    : "Verify your identity";
+  let title = "Verify your identity";
+  let subtitle = "One-Time Password (OTP) for sign-in";
+  let introText = "To complete your sign-in, please use the following one-time password (OTP) code:";
+  let warningText = "If you did not attempt to sign in to your account, you can safely ignore this email.";
+  let previewText = "Your Client Core verification code";
 
-  const subtitle = isForgetPassword
-    ? "Reset code for your account"
-    : "One-Time Password (OTP) for sign-in";
-
-  const introText = isForgetPassword
-    ? "We received a request to reset your password. Use the following verification code to complete the process:"
-    : "To complete your sign-in, please use the following one-time password (OTP) code:";
-
-  const warningText = isForgetPassword
-    ? "If you did not request a password reset, you can safely ignore this email. Your password will remain unchanged."
-    : "If you did not attempt to sign in to your account, you can safely ignore this email.";
+  if (isForgetPassword) {
+    title = "Reset your password";
+    subtitle = "Reset code for your account";
+    introText = "We received a request to reset your password. Use the following verification code to complete the process:";
+    warningText = "If you did not request a password reset, you can safely ignore this email. Your password will remain unchanged.";
+    previewText = "Reset your Client Core password";
+  } else if (isEmailVerification) {
+    title = "Verify your email address";
+    subtitle = "Confirm your email to activate your account";
+    introText = "Thank you for joining Client Core! Please click the button below to verify your email address and activate your account:";
+    warningText = "If you did not create an account, you can safely ignore this email.";
+    previewText = "Verify your Client Core email address";
+  } else if (isChangeEmail) {
+    title = "Verify your new email address";
+    subtitle = "Confirm your email change request";
+    introText = `You have requested to change your email address to ${newEmail || ""}. Please click the button below to verify your new email address:`;
+    warningText = "If you did not request an email change, please contact support immediately.";
+    previewText = "Verify your new Client Core email address";
+  }
 
   return (
     <Html lang="en">
       <Head />
 
-      <Preview>
-        {isForgetPassword
-          ? "Reset your Client Core password"
-          : "Your Client Core verification code"}
-      </Preview>
+      <Preview>{previewText}</Preview>
 
       <Body style={styles.body}>
         <Container style={styles.container}>
@@ -71,24 +82,42 @@ export default function OtpEmail({ otp, type }: OtpEmailProps) {
             <Text style={styles.paragraph}>{introText}</Text>
 
             {/* OTP Card */}
-            <Section style={styles.otpCard}>
-              <Text style={styles.otpLabel}>Your Verification Code</Text>
+            {otp && (
+              <Section style={styles.otpCard}>
+                <Text style={styles.otpLabel}>Your Verification Code</Text>
 
-              <Text style={styles.otp}>{otp}</Text>
+                <Text style={styles.otp}>{otp}</Text>
 
-              <Text style={styles.expire}>
-                This code will expire in{" "}
-                <span style={{ fontWeight: 600 }}>10 minutes</span>.
-              </Text>
-            </Section>
+                <Text style={styles.expire}>
+                  This code will expire in{" "}
+                  <span style={{ fontWeight: 600 }}>10 minutes</span>.
+                </Text>
+              </Section>
+            )}
+
+            {/* Verification Link Button */}
+            {url && (
+              <Section style={styles.buttonContainer}>
+                <Link href={url} style={styles.button}>
+                  Verify Email Address
+                </Link>
+                <Text style={styles.urlText}>
+                  Or copy and paste this link in your browser:
+                  <br />
+                  <Link href={url} style={styles.linkFallback}>
+                    {url}
+                  </Link>
+                </Text>
+              </Section>
+            )}
 
             <Hr style={styles.hr} />
 
             <Text style={styles.securityTitle}>Security Notice</Text>
 
             <Text style={styles.paragraph}>
-              For your security, never share this code with anyone. Client Core
-              staff will never ask for this code.
+              For your security, never share this code or link with anyone. Client Core
+              staff will never ask for them.
             </Text>
 
             <Text style={styles.paragraph}>{warningText}</Text>
@@ -227,6 +256,39 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: 0,
     fontSize: 13,
     color: "#1e40af",
+  },
+
+  buttonContainer: {
+    textAlign: "center" as const,
+    marginTop: 24,
+    marginBottom: 24,
+  },
+
+  button: {
+    backgroundColor: "#2563eb",
+    borderRadius: 8,
+    color: "#ffffff",
+    fontSize: 15,
+    fontWeight: 600,
+    textDecoration: "none",
+    textAlign: "center" as const,
+    display: "inline-block",
+    padding: "12px 32px",
+  },
+
+  urlText: {
+    marginTop: 16,
+    fontSize: 13,
+    lineHeight: "20px",
+    color: "#64748b",
+    textAlign: "center" as const,
+  },
+
+  linkFallback: {
+    color: "#2563eb",
+    textDecoration: "underline",
+    fontSize: 12,
+    wordBreak: "break-all" as const,
   },
 
   hr: {

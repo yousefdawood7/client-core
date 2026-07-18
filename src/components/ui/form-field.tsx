@@ -9,12 +9,13 @@ import { cn } from "@/lib/utils";
 import TogglePassword from "./toggle-password";
 
 type FormFieldProps = {
-  label: string;
+  label: React.ReactNode;
   type?: string;
   name: string;
   placeholder?: string;
   defaultValue?: string;
   disabled?: boolean;
+  required?: boolean;
 };
 
 export default function FormField({
@@ -24,6 +25,7 @@ export default function FormField({
   placeholder,
   defaultValue = "",
   disabled = false,
+  required = false,
 }: FormFieldProps) {
   const id = useId();
   const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
@@ -41,13 +43,18 @@ export default function FormField({
       defaultValue={defaultValue}
       render={({ field, fieldState }) => (
         <Field data-invalid={fieldState.invalid}>
-          <FieldLabel htmlFor={id}>{label}</FieldLabel>
+          <FieldLabel htmlFor={id}>
+            <span className="flex items-center gap-0.5">
+              {label}
+              {required && <span className="text-destructive">*</span>}
+            </span>
+          </FieldLabel>
           <div className="relative">
             <Input
               {...field}
               aria-invalid={fieldState.invalid}
               id={id}
-              name={name || label.toLowerCase()}
+              name={name}
               type={
                 type === "password"
                   ? isPasswordShown

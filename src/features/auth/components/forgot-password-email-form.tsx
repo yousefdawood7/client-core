@@ -4,12 +4,13 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import FormField from "@/features/auth/components/form-field";
+import FormField from "@/components/ui/form-field";
 import {
   ForgotPasswordSchema,
   forgotPasswordSchema,
 } from "@/features/auth/schemas";
 import { authClient } from "@/lib/auth-client";
+import AuthButton from "@/features/auth/components/auth-button";
 
 type ForgotPasswordEmailFormProps = {
   onSuccess: (email: string) => void;
@@ -78,14 +79,13 @@ export default function ForgotPasswordEmailForm({
           </div>
         )}
 
-        <Button
+        <AuthButton
           type="submit"
           size="lg"
-          disabled={form.formState.isSubmitting || !form.formState.isValid}
+          isPending={form.formState.isSubmitting}
           className="w-full font-semibold cursor-pointer rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-[14px] shadow-sm transition-all focus-visible:ring-2 active:scale-[0.98]"
-        >
-          {form.formState.isSubmitting ? "Sending..." : "Send reset code"}
-        </Button>
+          content="Send reset code"
+        />
       </form>
     </FormProvider>
   );

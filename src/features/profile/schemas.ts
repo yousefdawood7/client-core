@@ -37,22 +37,21 @@ export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
 export const createUserSchema = z
   .object({
     name: z
-      .string("Name is Required")
+      .string()
       .min(3, { message: "Name must be at least 3 characters" }),
 
-    email: z
-    .string("Email is required")
-    .min(1, "Email is required")
-    .pipe(z.email("Invalid email address")),
+    email: z.email({
+      message: "Invalid email address",
+    }),
 
     password: z
-      .string("password is required")
+      .string()
       .min(8, {
         message: "Password must be at least 8 characters",
       }),
 
     confirmPassword: z
-      .string("Password is required")
+      .string()
       .min(8, {
         message: "Password must be at least 8 characters",
       }),
