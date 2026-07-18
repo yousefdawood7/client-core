@@ -11,6 +11,7 @@ import {
   resetPasswordSchema,
 } from "@/features/auth/schemas";
 import { authClient } from "@/lib/auth-client";
+import { Spinner } from "@/components/ui/spinner";
 
 type ForgotPasswordOtpFormProps = {
   email: string;
@@ -104,7 +105,14 @@ export default function ForgotPasswordOtpForm({
           }
           className="w-full font-semibold cursor-pointer rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-[14px] shadow-sm transition-all focus-visible:ring-2 active:scale-[0.98]"
         >
-          {form.formState.isSubmitting ? "Resetting..." : "Reset password"}
+          {form.formState.isSubmitting ? (
+            <>
+              <Spinner />
+              Reset Password
+            </>
+          ) : (
+            "Reset password"
+          )}
         </Button>
 
         <Button

@@ -17,6 +17,7 @@ import FormField from "@/components/ui/form-field";
 import { useSignin } from "@/features/auth/hooks/useSignin";
 import { Label } from "@/components/ui/label";
 import { useQuickLogin } from "@/features/auth/hooks/useQuickLogin";
+import AuthButton from "@/features/auth/components/auth-button";
 
 function LoginForm() {
   const form = useForm<LoginSchema>({
@@ -104,14 +105,13 @@ function LoginForm() {
         )}
 
         {/* Sign In Button */}
-        <Button
+        <AuthButton
+          content="Sign In"
           type="submit"
           size="lg"
-          disabled={form.formState.isSubmitting}
+          isPending={form.formState.isSubmitting}
           className="w-full font-semibold cursor-pointer rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground text-[14px] shadow-sm transition-all focus-visible:ring-2 active:scale-[0.98]"
-        >
-          {form.formState.isSubmitting ? "Signing in..." : "Sign in"}
-        </Button>
+        />
       </form>
       {/* Divider / Quick Login Title */}
       <div className="relative my-6 flex items-center justify-center">
