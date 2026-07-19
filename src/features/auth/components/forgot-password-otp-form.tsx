@@ -10,7 +10,7 @@ import {
   ResetPasswordSchema,
   resetPasswordSchema,
 } from "@/features/auth/schemas";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/better-auth/auth-client";
 import { Spinner } from "@/components/ui/spinner";
 
 type ForgotPasswordOtpFormProps = {

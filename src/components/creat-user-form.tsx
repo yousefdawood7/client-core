@@ -3,7 +3,7 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/better-auth/auth-client";
 
 import { Button } from "@/components/ui/button";
 import { FieldGroup, FieldSet } from "@/components/ui/field";

@@ -9,7 +9,7 @@ import {
   ForgotPasswordSchema,
   forgotPasswordSchema,
 } from "@/features/auth/schemas";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/better-auth/auth-client";
 import AuthButton from "@/features/auth/components/auth-button";
 
 type ForgotPasswordEmailFormProps = {

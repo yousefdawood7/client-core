@@ -4,7 +4,7 @@ import UpdateInfoForm from "@/features/profile/components/update-info-form";
 import ChangePasswordForm from "@/features/profile/components/change-password-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
 
 export default async function ProfilePage() {

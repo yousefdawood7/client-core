@@ -6,8 +6,8 @@ import { admin, emailOTP } from "better-auth/plugins";
 import AuthEmail from "@/features/auth/components/email-templates";
 import { resend } from "@/lib/resend";
 
-import { env } from "./env";
-import { prisma } from "./prisma";
+import { env } from "../env";
+import { prisma } from "../prisma";
 import { createAuthMiddleware } from "better-auth/api";
 import { isEmailExist } from "@/features/auth/services/isEmailExist";
 
