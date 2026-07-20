@@ -1,5 +1,4 @@
 import "server-only";
-
 import { auth } from "@/lib/better-auth/auth";
 import type { CheckRolesType } from "@/lib/better-auth/types";
 

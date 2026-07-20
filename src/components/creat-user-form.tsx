@@ -2,19 +2,17 @@
 
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { authClient } from "@/lib/better-auth/auth-client";
-
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { FieldGroup, FieldSet } from "@/components/ui/field";
+import { authClient } from "@/lib/better-auth/auth-client";
 
 import {
-  createUserSchema,
   createUserDefaultValues,
   type CreateUserSchema,
+  createUserSchema,
 } from "../features/profile/schemas";
 import FormField from "./ui/form-field";
-import { toast } from "sonner";
 
 export default function CreateUserForm() {
   const methods = useForm<CreateUserSchema>({
