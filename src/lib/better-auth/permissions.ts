@@ -30,3 +30,6 @@ export const head = ac.newRole({
 export const sales = ac.newRole({
   user: ["agent"],
 });
+export type Permissions = {
+  [K in keyof typeof ac.statements]?: (typeof ac.statements)[K][number][];
+};
