@@ -1,15 +1,16 @@
+import "server-only";
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 import { APIError, betterAuth } from "better-auth";
-
+import { createAuthMiddleware } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js"; //
-import { admin, emailOTP } from "better-auth/plugins";
+import { admin as adminPlugin, emailOTP } from "better-auth/plugins";
 import AuthEmail from "@/features/auth/components/email-templates";
+import { isEmailExist } from "@/features/auth/services/isEmailExist";
 import { resend } from "@/lib/resend";
 
-import { env } from "./env";
-import { prisma } from "./prisma";
-import { createAuthMiddleware } from "better-auth/api";
-import { isEmailExist } from "@/features/auth/services/isEmailExist";
+import { env } from "../env";
+import { prisma } from "../prisma";
+import { ac, admin, head, sales } from "./permissions";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -48,7 +49,10 @@ export const auth = betterAuth({
   },
 
   plugins: [
-    admin(),
+    adminPlugin({
+      ac,
+      roles: { admin, head, sales },
+    }),
     nextCookies(),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {

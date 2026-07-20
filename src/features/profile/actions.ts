@@ -1,5 +1,6 @@
+import { authClient } from "@/lib/better-auth/auth-client";
+
 import { ChangePasswordSchema, UpdateProfileSchema } from "./schemas";
-import { authClient } from "@/lib/auth-client";
 
 export async function updateProfile(data: UpdateProfileSchema) {
   const { data: session } = await authClient.getSession();

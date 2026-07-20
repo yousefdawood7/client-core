@@ -7,17 +7,16 @@ import {
 } from "react-hook-form";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import FormField from "@/components/ui/form-field";
+import { Label } from "@/components/ui/label";
+import AuthButton from "@/features/auth/components/auth-button";
+import { useQuickLogin } from "@/features/auth/hooks/useQuickLogin";
+import { useSignin } from "@/features/auth/hooks/useSignin";
 import { QuickProfile } from "@/lib/types";
 
 import { QUICK_PROFILES } from "../constants";
 import { LoginSchema, loginSchema } from "../schemas";
-import FormField from "@/components/ui/form-field";
-import { useSignin } from "@/features/auth/hooks/useSignin";
-import { Label } from "@/components/ui/label";
-import { useQuickLogin } from "@/features/auth/hooks/useQuickLogin";
-import AuthButton from "@/features/auth/components/auth-button";
 
 function LoginForm() {
   const form = useForm<LoginSchema>({

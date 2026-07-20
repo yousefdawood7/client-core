@@ -10,6 +10,12 @@ const eslintConfig = defineConfig([
   // Override default ignores of eslint-config-next.
 
   {
+    settings: {
+      react: { version: "19" }, // Avoids auto-detection crash
+    },
+  },
+
+  {
     plugins: {
       "simple-import-sort": simpleImportSort,
     },

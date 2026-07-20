@@ -2,13 +2,14 @@
 
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Lock, Loader2 } from "lucide-react";
+import { Loader2,Lock } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent,CardHeader, CardTitle } from "@/components/ui/card";
 import FormField from "@/components/ui/form-field";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { changePasswordSchema, ChangePasswordSchema } from "../schemas";
+
 import { changePassword } from "../actions";
+import { ChangePasswordSchema,changePasswordSchema } from "../schemas";
 
 export default function ChangePasswordForm() {
 

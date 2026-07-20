@@ -1,14 +1,15 @@
 "use client";
 
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Save, Loader2 } from "lucide-react";
+import { Loader2,Save } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
-import { useRouter } from "next/navigation";
-import { updateProfileSchema, UpdateProfileSchema } from "../schemas";
+
 import { updateProfile } from "../actions";
+import { UpdateProfileSchema,updateProfileSchema } from "../schemas";
 
 export default function UpdateInfoForm({
   name,

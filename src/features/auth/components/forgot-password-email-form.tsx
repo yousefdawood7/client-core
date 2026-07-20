@@ -3,14 +3,13 @@ import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
+import AuthButton from "@/features/auth/components/auth-button";
 import {
   ForgotPasswordSchema,
   forgotPasswordSchema,
 } from "@/features/auth/schemas";
-import { authClient } from "@/lib/auth-client";
-import AuthButton from "@/features/auth/components/auth-button";
+import { authClient } from "@/lib/better-auth/auth-client";
 
 type ForgotPasswordEmailFormProps = {
   onSuccess: (email: string) => void;

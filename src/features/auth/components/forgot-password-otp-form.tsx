@@ -3,15 +3,15 @@ import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import FormField from "@/components/ui/form-field";
+import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import OtpField from "@/features/auth/components/otp-field";
 import {
   ResetPasswordSchema,
   resetPasswordSchema,
 } from "@/features/auth/schemas";
-import { authClient } from "@/lib/auth-client";
-import { Spinner } from "@/components/ui/spinner";
+import { authClient } from "@/lib/better-auth/auth-client";
 
 type ForgotPasswordOtpFormProps = {
   email: string;

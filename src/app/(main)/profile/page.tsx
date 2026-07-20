@@ -1,11 +1,11 @@
+import { headers } from "next/headers";
 import PageContainer from "@/components/page-container";
-import ProfileInfoCard from "@/features/profile/components/profile-info-card";
-import UpdateInfoForm from "@/features/profile/components/update-info-form";
-import ChangePasswordForm from "@/features/profile/components/change-password-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import ChangePasswordForm from "@/features/profile/components/change-password-form";
+import ProfileInfoCard from "@/features/profile/components/profile-info-card";
+import UpdateInfoForm from "@/features/profile/components/update-info-form";
+import { auth } from "@/lib/better-auth/auth";
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({

@@ -1,8 +1,8 @@
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/better-auth/auth-client";
 
 import { LoginSchema } from "../schemas";
-import { useRouter } from "next/navigation";
 
 export function useSignin() {
   const router = useRouter();

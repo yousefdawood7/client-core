@@ -1,7 +1,7 @@
-import { LoginSchema } from "@/features/auth/schemas";
-import { type QuickProfile } from "@/lib/types";
 import { useState } from "react";
 import { type UseFormReturn } from "react-hook-form";
+import { LoginSchema } from "@/features/auth/schemas";
+import { type QuickProfile } from "@/lib/types";
 
 export function useQuickLogin(form: UseFormReturn<LoginSchema>) {
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(

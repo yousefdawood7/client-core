@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -25,8 +24,8 @@ model User {
   banReason          String?
   banExpires         DateTime?
   companies          UserCompanies[]
-  leads              Lead[]          @relation("AgentLeads")
   historyLog         History[]
+  leads              Lead[]          @relation("AgentLeads")
   managedCompanies   Company[]       @relation("UserManagedCompanies")
   assignedTransfers  Assignment[]    @relation("AssignedUser")
   receivedTransfers  Assignment[]    @relation("ReceivedUser")
@@ -58,10 +57,10 @@ model Company {
   id          String          @id @default(uuid())
   name        String
   userId      String?
-  user        User?           @relation("UserManagedCompanies", fields: [userId], references: [id])
   users       UserCompanies[]
   leads       Lead[]
   assignments Assignment[]
+  user        User?           @relation("UserManagedCompanies", fields: [userId], references: [id])
 
   @@map("company")
 }
@@ -70,8 +69,8 @@ model Lead {
   id        String  @id @default(uuid())
   status    Status  @default(New)
   companyId String
-  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   agentId   String?
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   agent     User?   @relation("AgentLeads", fields: [agentId], references: [id])
 
   @@map("lead")
@@ -82,8 +81,8 @@ model History {
   action    Action
   details   String
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("history")
 }
@@ -97,12 +96,12 @@ enum Action {
 model Assignment {
   id               String   @id @default(uuid())
   companyId        String
-  company          Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   assignmentUserId String
-  assignedUser     User     @relation("AssignedUser", fields: [assignmentUserId], references: [id])
   receivedUserId   String
-  receivedUser     User     @relation("ReceivedUser", fields: [receivedUserId], references: [id])
   userId           String
+  company          Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  assignedUser     User     @relation("AssignedUser", fields: [assignmentUserId], references: [id])
+  receivedUser     User     @relation("ReceivedUser", fields: [receivedUserId], references: [id])
   creatorUser      User     @relation("CreatorUser", fields: [userId], references: [id])
   createdAt        DateTime @default(now())
 
@@ -132,7 +131,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -142,6 +140,7 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("account")
