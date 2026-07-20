@@ -1,3 +1,5 @@
+import "server-only";
+
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 import { APIError, betterAuth } from "better-auth";
 
