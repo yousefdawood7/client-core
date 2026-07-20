@@ -75,9 +75,15 @@ export const createUserDefaultValues: CreateUserSchema = {
   confirmPassword: "",
 };
 
+export const createCompanySchema = z.object({
+  companyName: z.string().min(1, "Company Name is required"),
+  salesManager: z.string().min(1, "Sales Manager is required"),
+});
+
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>;
 export type ChangePasswordSchema = z.infer<typeof changePasswordSchema>;
 export type LoginSchema = z.infer<typeof loginSchema>;
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
 export type CreateUserSchema = z.infer<typeof createUserSchema>;
+export type CreateCompanySchema = z.infer<typeof createCompanySchema>;
