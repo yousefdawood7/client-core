@@ -6,9 +6,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import FormDialog from "@/components/FormDialog";
 import { Button } from "@/components/ui/button";
-import { Field, FieldGroup } from "@/components/ui/field";
+import FormField from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   CreateCompanySchema,
   createCompanySchema,
@@ -110,7 +109,6 @@ export default function CompanyInfo() {
       companyName: "",
       salesManager: "",
     },
-    mode: "onTouched",
   });
 
   const onSubmit = () => {};
@@ -122,18 +120,19 @@ export default function CompanyInfo() {
         title="Add Company"
         submitText="Create"
         form={confirm}
-        onSubmit={onSubmit}>
-        <FieldGroup>
-          <Field>
-            <Label htmlFor="name">Company Name</Label>
-            <Input id="name" name="name" />
-          </Field>
+        onSubmit={onSubmit}
+      >
+        <FormField
+          label="Company Name"
+          name="companyName"
+          placeholder="Enter your company name"
+        />
 
-          <Field>
-            <Label htmlFor="salesManager">Sales Manager</Label>
-            <Input id="salesManager" name="salesManager" />
-          </Field>
-        </FieldGroup>
+        <FormField
+          label="Sales Manager"
+          name="salesManager"
+          placeholder="Enter name of sales manager"
+        />
       </FormDialog>
       <div className="container mx-auto">
         <Input type="text" placeholder="search" className="mt-4 w-80" />

@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import {
   type FieldValues,
   FormProvider,
@@ -34,10 +35,12 @@ export default function FormDialog<TFormValues extends FieldValues>({
   onSubmit,
   children,
 }: FormDialogProps<TFormValues>) {
+  const id = useId();
+
   return (
     <Dialog>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} id={id}>
           <div className="flex justify-end">
             <DialogTrigger render={trigger} />
           </div>
@@ -50,7 +53,9 @@ export default function FormDialog<TFormValues extends FieldValues>({
             {children}
 
             <DialogFooter>
-              <Button type="submit">{submitText}</Button>
+              <Button type="submit" form={id}>
+                {submitText}
+              </Button>
 
               <DialogClose render={<Button variant="outline">Cancel</Button>} />
             </DialogFooter>
