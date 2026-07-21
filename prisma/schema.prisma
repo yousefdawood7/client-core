@@ -59,6 +59,7 @@ model UserCompanies {
 model Company {
   id          String          @id @default(uuid())
   name        String
+  url         String?
   userId      String?
   users       UserCompanies[]
   leads       Lead[]
