@@ -1,5 +1,5 @@
 import { getAllCompanies } from "@/features/companies/services/getAllCompanies";
-import { handleErrorResponse } from "@/lib/better-auth/handleErrorResponse";
+import { handleErrorResponse } from "@/lib/better-auth/handleResponse";
 import { isAuthenticated } from "@/lib/better-auth/isAuthenticated";
 
 export async function GET() {
