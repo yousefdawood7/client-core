@@ -18,11 +18,13 @@ export async function GET(
 
   const company = await getCompany(id);
 
-  return handleSuccessResponse({
-    statusCode: 200,
-
-    ...(company
-      ? { data: company }
-      : { message: "There is no company with this ID" }),
-  });
+  return company
+    ? handleSuccessResponse({
+        statusCode: 200,
+        data: company,
+      })
+    : handleErrorResponse({
+        statusCode: 404,
+        message: "There is no company with this ID",
+      });
 }

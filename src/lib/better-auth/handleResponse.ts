@@ -1,13 +1,13 @@
 type HandleSuccessResponse = {
   statusCode: number;
   message?: string;
-  data?: Record<string, unknown>;
+  data?: Record<string, unknown> | null;
 };
 
 type HandleErrorResponse = {
   statusCode: number;
   message: string;
-  details?: Record<string, unknown>;
+  details?: Record<string, unknown> | null;
 };
 
 export function handleSuccessResponse({
