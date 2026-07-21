@@ -1,5 +1,5 @@
 import { createAccessControl } from "better-auth/plugins/access";
-import { adminAc,defaultStatements } from "better-auth/plugins/admin/access";
+import { adminAc, defaultStatements } from "better-auth/plugins/admin/access";
 
 const userStatements = [
   ...defaultStatements.user,
@@ -30,6 +30,8 @@ export const head = ac.newRole({
 export const sales = ac.newRole({
   user: ["agent"],
 });
+
+export const agent = ac.newRole({});
 export type Permissions = {
   [K in keyof typeof ac.statements]?: (typeof ac.statements)[K][number][];
 };
