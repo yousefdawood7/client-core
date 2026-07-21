@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
@@ -52,21 +52,15 @@ export default function AssignAgents() {
   const selectedCompany =
     COMPANIES.find((c) => c.id === selectedCompanyId) ?? COMPANIES[0];
 
-  const assignedAgentIds = useMemo(() => {
-    return companyAssignments[selectedCompanyId] || [];
-  }, [companyAssignments, selectedCompanyId]);
+  const assignedAgentIds = companyAssignments[selectedCompanyId] || [];
 
-  const assignedAgents = useMemo(() => {
-    return INITIAL_AGENTS.filter((agent) =>
-      assignedAgentIds.includes(agent.id),
-    );
-  }, [assignedAgentIds]);
+  const assignedAgents = INITIAL_AGENTS.filter((agent) =>
+    assignedAgentIds.includes(agent.id),
+  );
 
-  const availableAgents = useMemo(() => {
-    return INITIAL_AGENTS.filter(
-      (agent) => !assignedAgentIds.includes(agent.id),
-    );
-  }, [assignedAgentIds]);
+  const availableAgents = INITIAL_AGENTS.filter(
+    (agent) => !assignedAgentIds.includes(agent.id),
+  );
 
   const toggleAvailableChecked = (agentId: string) => {
     setCheckedAvailableIds((prev) => {
@@ -128,107 +122,101 @@ export default function AssignAgents() {
     );
   };
 
-  const availableColumns = useMemo<ColumnDef<Agent>[]>(
-    () => [
-      {
-        id: "select",
-        header: "",
-        cell: ({ row }) => (
-          <Checkbox
-            checked={checkedAvailableIds.has(row.original.id)}
-            onCheckedChange={() => toggleAvailableChecked(row.original.id)}
-          />
-        ),
-      },
-      {
-        accessorKey: "name",
-        header: "Agent Name",
-        cell: ({ row }) => {
-          const agent = row.original;
-          return (
-            <div
-              onClick={() => toggleAvailableChecked(agent.id)}
-              className="flex items-center gap-3 cursor-pointer select-none"
-            >
-              <Avatar>
-                <AvatarFallback
-                  className={cn(agent.colorClass, "font-semibold text-white")}
-                >
-                  {agent.initials}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <div className="text-sm font-medium text-foreground">
-                  {agent.name}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {selectedCompany.name}
-                </div>
+  const availableColumns: ColumnDef<Agent>[] = [
+    {
+      id: "select",
+      header: "",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={checkedAvailableIds.has(row.original.id)}
+          onCheckedChange={() => toggleAvailableChecked(row.original.id)}
+        />
+      ),
+    },
+    {
+      accessorKey: "name",
+      header: "Agent Name",
+      cell: ({ row }) => {
+        const agent = row.original;
+        return (
+          <div
+            onClick={() => toggleAvailableChecked(agent.id)}
+            className="flex items-center gap-3 cursor-pointer select-none"
+          >
+            <Avatar>
+              <AvatarFallback
+                className={cn(agent.colorClass, "font-semibold text-white")}
+              >
+                {agent.initials}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="text-sm font-medium text-foreground">
+                {agent.name}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {selectedCompany.name}
               </div>
             </div>
-          );
-        },
+          </div>
+        );
       },
-    ],
-    [checkedAvailableIds, selectedCompany.name],
-  );
+    },
+  ];
 
   // Define Assigned Columns
-  const assignedColumns = useMemo<ColumnDef<Agent>[]>(
-    () => [
-      {
-        id: "select",
-        header: "",
-        cell: ({ row }) => (
-          <Checkbox
-            checked={checkedAssignedIds.has(row.original.id)}
-            onCheckedChange={() => toggleAssignedChecked(row.original.id)}
-          />
-        ),
-      },
-      {
-        accessorKey: "name",
-        header: "Agent Name",
-        cell: ({ row }) => {
-          const agent = row.original;
-          return (
-            <div
-              onClick={() => toggleAssignedChecked(agent.id)}
-              className="flex items-center gap-3 cursor-pointer select-none"
-            >
-              <Avatar>
-                <AvatarFallback
-                  className={cn(
-                    "size-8 rounded-full text-xs font-bold text-white",
-                    agent.colorClass,
-                  )}
-                >
-                  {agent.initials}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <div className="text-sm font-medium text-foreground">
-                  {agent.name}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {agent.company}
-                </div>
+  const assignedColumns: ColumnDef<Agent>[] = [
+    {
+      id: "select",
+      header: "",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={checkedAssignedIds.has(row.original.id)}
+          onCheckedChange={() => toggleAssignedChecked(row.original.id)}
+        />
+      ),
+    },
+    {
+      accessorKey: "name",
+      header: "Agent Name",
+      cell: ({ row }) => {
+        const agent = row.original;
+        return (
+          <div
+            onClick={() => toggleAssignedChecked(agent.id)}
+            className="flex items-center gap-3 cursor-pointer select-none"
+          >
+            <Avatar>
+              <AvatarFallback
+                className={cn(
+                  "size-8 rounded-full text-xs font-bold text-white",
+                  agent.colorClass,
+                )}
+              >
+                {agent.initials}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="text-sm font-medium text-foreground">
+                {agent.name}
               </div>
-              <div>
-                <div className="text-sm font-medium text-foreground">
-                  {agent.name}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {selectedCompany.name}
-                </div>
+              <div className="text-xs text-muted-foreground">
+                {agent.company}
               </div>
             </div>
-          );
-        },
+            <div>
+              <div className="text-sm font-medium text-foreground">
+                {agent.name}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {selectedCompany.name}
+              </div>
+            </div>
+          </div>
+        );
       },
-    ],
-    [checkedAssignedIds, selectedCompany],
-  );
+    },
+  ];
 
   return (
     <div className="space-y-6">
