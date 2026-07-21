@@ -9,10 +9,13 @@ export function handleErrorResponse({
   message,
   details,
 }: HandleErrorResponse) {
-  return Response.json({
-    statusCode,
-    message,
-    status: statusCode < 500 ? "fail" : "error",
-    ...(details && {}),
-  });
+  return Response.json(
+    {
+      statusCode,
+      message,
+      status: statusCode < 500 ? "fail" : "error",
+      ...(details && {}),
+    },
+    { status: statusCode },
+  );
 }
