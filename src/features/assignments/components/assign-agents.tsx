@@ -152,8 +152,10 @@ const selectedCompany =
           </Avatar>
             <div>
               <div className="text-sm font-medium text-foreground">{agent.name}</div>
-              <div className="text-xs text-muted-foreground">{agent.company}</div>
-            </div>
+                <div className="text-xs text-muted-foreground">
+                  {selectedCompany.name}
+                </div>     
+                 </div>
           </div>
         );
       }
@@ -194,13 +196,13 @@ const selectedCompany =
               </Avatar>
             <div>
               <div className="text-sm font-medium text-foreground">{agent.name}</div>
-              <div className="text-xs text-muted-foreground">{agent.company}</div>
+              <div className="text-xs text-muted-foreground">{selectedCompany.name}</div>
             </div>
           </div>
         );
       }
     }
-  ], [checkedAssignedIds]);
+  ], [checkedAssignedIds, selectedCompany]);
 
 return (
   <div className="space-y-6">
