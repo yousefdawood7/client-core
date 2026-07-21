@@ -1,3 +1,4 @@
+import { companyPipeline } from "@/features/companies/utils/company.pipeline";
 import { prisma } from "@/lib/prisma";
 
 export async function getCompany(id: string) {
@@ -5,34 +6,7 @@ export async function getCompany(id: string) {
     where: {
       id,
     },
-
-    omit: {
-      userId: true,
-      updatedAt: true,
-    },
-
-    include: {
-      users: {
-        where: {
-          user: {
-            role: "sales",
-          },
-        },
-        select: {
-          user: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-
-      _count: {
-        select: {
-          leads: true,
-        },
-      },
-    },
+    ...companyPipeline,
   });
   return (
     company && {
