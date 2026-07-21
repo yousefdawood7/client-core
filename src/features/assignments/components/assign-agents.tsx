@@ -128,7 +128,6 @@ export default function AssignAgents() {
     );
   };
 
-  // Define Available Columns
   const availableColumns = useMemo<ColumnDef<Agent>[]>(
     () => [
       {
@@ -163,7 +162,7 @@ export default function AssignAgents() {
                   {agent.name}
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {agent.company}
+                  {selectedCompany.name}
                 </div>
               </div>
             </div>
@@ -171,7 +170,7 @@ export default function AssignAgents() {
         },
       },
     ],
-    [checkedAvailableIds],
+    [checkedAvailableIds, selectedCompany.name],
   );
 
   // Define Assigned Columns
@@ -215,12 +214,20 @@ export default function AssignAgents() {
                   {agent.company}
                 </div>
               </div>
+              <div>
+                <div className="text-sm font-medium text-foreground">
+                  {agent.name}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {selectedCompany.name}
+                </div>
+              </div>
             </div>
           );
         },
       },
     ],
-    [checkedAssignedIds],
+    [checkedAssignedIds, selectedCompany],
   );
 
   return (

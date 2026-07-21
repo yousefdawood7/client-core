@@ -31,8 +31,8 @@ export const INITIAL_AGENTS: Agent[] = [
 export const COMPANIES: Company[] = [
   { id: "c1", name: "TechVision Solutions", agentsCount: 3 },
   { id: "c2", name: "Global Commerce Ltd", agentsCount: 2 },
-  { id: "c3", name: "Nexus Retail Group", agentsCount: 3 },
-  { id: "c4", name: "Prime Digital Agency", agentsCount: 2 },
+  { id: "c3", name: "Nexus Retail Group", agentsCount: 1 },
+  { id: "c4", name: "Prime Digital Agency", agentsCount: 1 },
   { id: "c5", name: "Apex Market Partners", agentsCount: 1 }
 ];
 
