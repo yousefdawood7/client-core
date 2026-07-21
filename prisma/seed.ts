@@ -33,7 +33,13 @@ import { admin as adminPlugin } from "better-auth/plugins";
 
 import "dotenv/config";
 import { Action, PrismaClient, Status } from "../generated/prisma";
-import { ac, admin, head, sales } from "../src/lib/better-auth/permissions";
+import {
+  ac,
+  admin,
+  agent,
+  head,
+  sales,
+} from "../src/lib/better-auth/permissions";
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
@@ -53,7 +59,7 @@ const seedAuth = betterAuth({
   database: prismaAdapter(prisma, { provider: "postgresql" }),
   secret: process.env.BETTER_AUTH_SECRET,
   emailAndPassword: { enabled: true },
-  plugins: [adminPlugin({ ac, roles: { admin, head, sales } })],
+  plugins: [adminPlugin({ ac, roles: { admin, head, sales, agent } })],
 });
 
 // ---------------------------------------------------------------------
@@ -72,10 +78,10 @@ async function createUser({
   // Matches the roles registered with the admin plugin in auth.ts.
   // Leave undefined for plain "agent" users (defaults to better-auth's
   // built-in "user" role).
-  role?: "admin" | "head" | "sales" | "agent" | null;
+  role?: "admin" | "head" | "sales" | "agent";
 }) {
   const { user } = await seedAuth.api.createUser({
-    body: { email, password, name },
+    body: { email, password, name, role },
   });
 
   // auth.api.createUser doesn't mark the email verified; seeded demo
