@@ -2,6 +2,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { getInitials } from "@/lib/utils";
 
 import { DBHistoryLog } from "../types";
 
@@ -11,14 +12,6 @@ export const auditLogsColumns: ColumnDef<DBHistoryLog>[] = [
     header: "User",
     cell: ({ row }) => {
       const user = row.original.user;
-      const initials = user?.name
-        ? user.name
-            .split(" ")
-            .map((n) => n[0])
-            .join("")
-            .toUpperCase()
-            .slice(0, 2)
-        : "U";
 
       return (
         <div className="flex items-center gap-3">
@@ -28,7 +21,7 @@ export const auditLogsColumns: ColumnDef<DBHistoryLog>[] = [
               alt={user?.name || "User"}
             />
             <AvatarFallback className="bg-primary/10 text-primary text-xs font-semibold">
-              {initials}
+              {getInitials(user?.name)}
             </AvatarFallback>
           </Avatar>
 

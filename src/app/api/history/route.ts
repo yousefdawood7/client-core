@@ -1,31 +1,31 @@
-import { Action } from "@generated/prisma";
 import { createHistoryLog } from "@/features/audit-logs/services/createHistoryLog";
 import { getHistoryLogs } from "@/features/audit-logs/services/getHistoryLogs";
-import { handleErrorResponse } from "@/lib/better-auth/handleErrorResponse";
+import {
+  handleErrorResponse,
+  handleSuccessResponse,
+} from "@/lib/better-auth/handleResponse";
 import { isAuthenticated } from "@/lib/better-auth/isAuthenticated";
+
+import { getQuerySchema, postBodySchema } from "./schemas";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const userId = url.searchParams.get("userId") || undefined;
-  const search = url.searchParams.get("search") || undefined;
+  const result = getQuerySchema.safeParse({
+    userId: url.searchParams.get("userId"),
+    search: url.searchParams.get("search"),
+    action: url.searchParams.get("action"),
+    limit: url.searchParams.get("limit"),
+    offset: url.searchParams.get("offset"),
+  });
 
-  // Validate action enum to prevent database errors on arbitrary string input
-  const actionParam = url.searchParams.get("action");
-  const action = Object.values(Action).includes(actionParam as Action)
-    ? (actionParam as Action)
-    : undefined;
+  if (!result.success) {
+    return handleErrorResponse({
+      statusCode: 400,
+      message: "Invalid query parameters",
+    });
+  }
 
-  // Validate limit and offset values to prevent negative values or NaN
-  const limitParam = url.searchParams.get("limit");
-  const limit =
-    limitParam && !isNaN(Number(limitParam))
-      ? Math.min(Math.max(1, Number(limitParam)), 100)
-      : undefined;
-  const offsetParam = url.searchParams.get("offset");
-  const offset =
-    offsetParam && !isNaN(Number(offsetParam))
-      ? Math.max(0, Number(offsetParam))
-      : undefined;
+  const { userId, search, action, limit, offset } = result.data;
 
   if (!(await isAuthenticated()) && false /* FOR TESTING */)
     return handleErrorResponse({
@@ -33,9 +33,18 @@ export async function GET(req: Request) {
       message: "You have no access to companies, please log",
     });
 
-  return Response.json(
-    await getHistoryLogs({ userId, action, search, limit, offset }),
-  );
+  const historyLogs = await getHistoryLogs({
+    userId,
+    action,
+    search,
+    limit,
+    offset,
+  });
+
+  return handleSuccessResponse({
+    statusCode: 200,
+    data: historyLogs,
+  });
 }
 
 export async function POST(req: Request) {
@@ -44,17 +53,32 @@ export async function POST(req: Request) {
       statusCode: 401,
       message: "You have no access to companies, please log",
     });
-  const { action, entity, oldValue, newValue } = await req.json();
-  if (!Object.values(Action).includes(action) || !entity || !newValue) {
-    return handleErrorResponse({
-      statusCode: 400,
-      message: "Invalid history log payload",
-    });
-  }
+
   try {
-    return Response.json(
-      await createHistoryLog({ action, entity, oldValue, newValue }),
-    );
+    const body = await req.json();
+    const result = postBodySchema.safeParse(body);
+
+    if (!result.success) {
+      return handleErrorResponse({
+        statusCode: 400,
+        message: "Invalid history log payload",
+      });
+    }
+
+    const { action, entity, oldValue, newValue } = result.data;
+
+    const historyLog = await createHistoryLog({
+      action,
+      entity,
+      oldValue,
+      newValue,
+    });
+
+    return handleSuccessResponse({
+      statusCode: 201,
+      message: "History log created successfully",
+      data: historyLog as unknown as Record<string, unknown>,
+    });
   } catch (e) {
     return handleErrorResponse({
       statusCode: 400,

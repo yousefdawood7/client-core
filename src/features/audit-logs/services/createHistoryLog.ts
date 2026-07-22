@@ -11,24 +11,6 @@ interface CreateHistoryLogInput {
   newValue: string;
 }
 
-export async function createHistoryLogInternal({
-  action,
-  entity,
-  oldValue,
-  newValue,
-  userId,
-}: CreateHistoryLogInput & { userId: string }) {
-  return await prisma.history.create({
-    data: {
-      action,
-      entity,
-      oldValue: oldValue || null,
-      newValue,
-      userId,
-    },
-  });
-}
-
 export async function createHistoryLog({
   action,
   entity,
@@ -43,13 +25,16 @@ export async function createHistoryLog({
     throw new Error("You must be logged in to perform this action.");
   }
 
-  return await createHistoryLogInternal({
-    action,
-    entity,
-    oldValue,
-    newValue,
-    userId: session.user.id,
+  return await prisma.history.create({
+    data: {
+      action,
+      entity,
+      oldValue: oldValue || null,
+      newValue,
+      userId: session.user.id,
+    },
   });
 }
+
 
 

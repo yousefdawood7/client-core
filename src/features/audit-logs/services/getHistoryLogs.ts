@@ -2,6 +2,7 @@
 import { Prisma } from "@generated/prisma";
 import { Action } from "@generated/prisma";
 import { prisma } from "@/lib/prisma";
+import { historyPipeline } from "@/features/audit-logs/utils/history.pipeline";
 
 interface GetHistoryLogsInput {
   userId?: string;
@@ -61,22 +62,9 @@ export async function getHistoryLogs(options?: GetHistoryLogsInput) {
     }),
     prisma.history.findMany({
       where: whereClause,
-      orderBy: {
-        createdAt: "desc",
-      },
       take: limit,
       skip: offset,
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            role: true,
-          },
-        },
-      },
+      ...historyPipeline,
     }),
   ]);
 
@@ -87,3 +75,4 @@ export async function getHistoryLogs(options?: GetHistoryLogsInput) {
     offset,
   };
 }
+

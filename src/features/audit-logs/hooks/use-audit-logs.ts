@@ -28,8 +28,10 @@ export function useAuditLogs() {
     queryKey: ["audit-logs", { actionFilter, debouncedSearch, page }],
     queryFn: async () => {
       const result = await fetchClient<{
-        logs: RawHistoryLog[];
-        total: number;
+        data: {
+          logs: RawHistoryLog[];
+          total: number;
+        };
       }>("/api/history", {
         params: {
           limit,
@@ -39,7 +41,7 @@ export function useAuditLogs() {
         },
       });
 
-      const formattedLogs = result.logs.map(
+      const formattedLogs = result.data.logs.map(
         (log: RawHistoryLog): DBHistoryLog => ({
           ...log,
           createdAt: new Date(log.createdAt),
@@ -48,7 +50,7 @@ export function useAuditLogs() {
 
       return {
         logs: formattedLogs,
-        total: result.total,
+        total: result.data.total,
       };
     },
   });
