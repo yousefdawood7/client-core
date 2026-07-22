@@ -87,12 +87,12 @@ model Lead {
 }
 
 model History {
-  id      String @id @default(uuid())
-  action  Action
-  details String
-  userId  String
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(uuid())
+  action    Action
+  entity    String
+  oldValue  String?
+  newValue  String
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -100,9 +100,9 @@ model History {
 }
 
 enum Action {
-  Create
-  Edit
-  Delete
+  create
+  update
+  delete
 }
 
 model Assignment {

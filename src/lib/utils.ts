@@ -7,6 +7,17 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function getInitials(name?: string | null): string {
+  if (!name) return "U";
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+
 export const handleZodErrors = function (zodError: z.ZodError) {
   const errorObjects: Record<string, string | string[]> = {};
 

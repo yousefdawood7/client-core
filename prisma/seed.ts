@@ -228,7 +228,7 @@ async function main() {
   ];
 
   let leadCount = 0;
-  const allLeads: { id: string; companyId: string; agentId: string | null }[] =
+  const allLeads: { id: string; companyId: string; agentId: string | null; status: Status }[] =
     [];
 
   for (const company of companies) {
@@ -247,8 +247,10 @@ async function main() {
 
       await prisma.history.create({
         data: {
-          action: Action.Create,
-          details: `${leadNames[i % leadNames.length]} created for ${company.name}, assigned to ${agent.name}`,
+          action: Action.create,
+          entity: "Lead",
+          oldValue: null,
+          newValue: `${leadNames[i % leadNames.length]} created for ${company.name}, assigned to ${agent.name}`,
           userId: agent.id,
         },
       });
@@ -262,8 +264,10 @@ async function main() {
     const newStatus = randomFrom(statuses);
     await prisma.history.create({
       data: {
-        action: Action.Edit,
-        details: `Lead ${lead.id} status updated to "${newStatus}"`,
+        action: Action.update,
+        entity: "Lead",
+        oldValue: lead.status,
+        newValue: newStatus,
         userId: editor.id,
       },
     });
@@ -286,8 +290,10 @@ async function main() {
 
     await prisma.history.create({
       data: {
-        action: Action.Create,
-        details: `${company.name} reassigned from ${from.name} to ${to.name}`,
+        action: Action.create,
+        entity: "Company",
+        oldValue: from.name,
+        newValue: to.name,
         userId: david.id,
       },
     });
