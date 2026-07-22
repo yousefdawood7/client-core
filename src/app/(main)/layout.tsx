@@ -1,6 +1,6 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import Header from "@/features/navbar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import Header from "@/features/navbar";
 
 type MainLayoutProps = {
   children: React.ReactNode;

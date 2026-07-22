@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Roboto } from "next/font/google";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryProvider } from "@/components/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import "./globals.css";
 import { ThemeToggle } from "@/components/ui/them-toggle";
-
+import "./globals.css";
 
 const fontSans = Inter({
   variable: "--font-sans",
@@ -34,9 +33,9 @@ export default function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             {children}
-                      <div className="fixed right-6 bottom-6 z-50">
-            <ThemeToggle />
-          </div>
+            <div className="fixed right-6 bottom-6 z-50">
+              <ThemeToggle />
+            </div>
             <Toaster />
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryProvider>
