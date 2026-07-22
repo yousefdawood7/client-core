@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
-import Header from "@/features/header";
+import Header from "@/features/navbar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 type MainLayoutProps = {

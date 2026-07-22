@@ -33,7 +33,7 @@ export default function ProfileInfoCard({
         <h2 className="text-lg font-bold text-foreground tracking-tight">
           {name || "User"}
         </h2>
-        <Badge variant="secondary" className="text-[#7008E7] mt-1">
+        <Badge variant="secondary" className="text-role mt-1">
           {role ? role.charAt(0).toUpperCase() + role.slice(1) : "User"}
         </Badge>
       </div>

@@ -13,24 +13,33 @@ import { SidebarTrigger } from "../../components/ui/sidebar";
 export default function HeaderBreadcrumb() {
   const pathName = usePathname();
 
-  const pageTitle = pathName
+  const breadcrumbs = pathName
     .split("/")
     .filter(Boolean)
-    .pop()
-    ?.split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+    .map((segment) =>
+      segment
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" "),
+    );
 
   return (
     <div className="flex items-center gap-4">
       <SidebarTrigger />
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>CRM Pro</BreadcrumbItem>
-          <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{pageTitle}</BreadcrumbPage>
+            <BreadcrumbPage>CRM Pro</BreadcrumbPage>
           </BreadcrumbItem>
+
+          {breadcrumbs.map((item, index) => (
+            <div key={index} className="flex items-center">
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{item}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </div>
+          ))}
         </BreadcrumbList>
       </Breadcrumb>
     </div>

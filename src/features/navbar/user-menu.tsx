@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSignOut } from "@/hooks/use-sign-out";
+import { useSignOut } from "@/features/auth/hooks/useSignout";
 import { authClient } from "@/lib/better-auth/auth-client";
 
 import { Avatar, AvatarFallback } from "../../components/ui/avatar";

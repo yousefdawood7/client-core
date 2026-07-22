@@ -7,12 +7,11 @@ import { DataTable } from "@/components/data-table";
 import FormDialog from "@/components/FormDialog";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
-import { Input } from "@/components/ui/input";
+import SearchInput from "@/components/ui/search-input";
 import {
   CreateCompanySchema,
   createCompanySchema,
 } from "@/features/companies/schema";
-import SearchInput from "@/components/ui/search-input";
 
 type User = {
   compnay: string;
