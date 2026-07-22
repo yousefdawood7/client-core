@@ -37,9 +37,9 @@ export default function UserMenu() {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">
-          <DropdownMenuItem>
-            <Link href="/profile">profile</Link>
-          </DropdownMenuItem>
+          <Link href="/profile">
+            <DropdownMenuItem>profile</DropdownMenuItem>
+          </Link>
 
           <DropdownMenuItem>Settings</DropdownMenuItem>
 
