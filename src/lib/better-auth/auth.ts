@@ -2,7 +2,6 @@ import "server-only";
 import { prismaAdapter } from "@better-auth/prisma-adapter";
 import { APIError, betterAuth } from "better-auth";
 import { createAuthMiddleware } from "better-auth/api";
-import { nextCookies } from "better-auth/next-js"; //
 import { admin as adminPlugin, emailOTP } from "better-auth/plugins";
 import AuthEmail from "@/features/auth/components/email-templates";
 import { isEmailExist } from "@/features/auth/services/isEmailExist";
@@ -71,7 +70,6 @@ export const auth = betterAuth({
         });
       },
     }),
-    nextCookies(),
   ],
 
   emailAndPassword: {
