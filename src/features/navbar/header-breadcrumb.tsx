@@ -29,7 +29,7 @@ export default function HeaderBreadcrumb() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbPage>CRM Pro</BreadcrumbPage>
+            <BreadcrumbPage>client core</BreadcrumbPage>
           </BreadcrumbItem>
 
           {breadcrumbs.map((item, index) => (
