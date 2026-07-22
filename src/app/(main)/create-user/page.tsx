@@ -1,4 +1,4 @@
-import CreateUserForm from '@/components/creat-user-form'
+import CreateUserForm from '@/features/createUser/components/creat-user-form'
 import PageContainer from '@/components/page-container'
 
 export default function page() {

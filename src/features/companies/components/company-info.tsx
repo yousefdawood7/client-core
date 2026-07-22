@@ -12,6 +12,7 @@ import {
   CreateCompanySchema,
   createCompanySchema,
 } from "@/features/companies/schema";
+import SearchInput from "@/components/ui/search-input";
 
 type User = {
   compnay: string;
@@ -134,10 +135,10 @@ export default function CompanyInfo() {
           placeholder="Enter name of sales manager"
         />
       </FormDialog>
-      <div className="container mx-auto">
-        <Input type="text" placeholder="search" className="mt-4 w-80" />
+      <div className="container mx-auto flex flex-col gap-4">
+        <SearchInput />
         <DataTable columns={columns} data={data} />
-      </div>
+      </div> 
     </>
   );
 }

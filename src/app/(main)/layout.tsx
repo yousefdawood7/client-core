@@ -1,4 +1,6 @@
-import React from "react";
+import { AppSidebar } from "@/components/app-sidebar";
+import Header from "@/features/header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -6,10 +8,12 @@ type MainLayoutProps = {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="min-h-screen bg-background">
-      <main className="max-w-4xl mx-auto w-full px-4 py-8 md:py-12">
-        {children}
-      </main>
-    </div>
+    <SidebarProvider defaultOpen>
+      <AppSidebar />
+      <SidebarInset className="min-h-screen bg-muted/30">
+        <Header />
+        <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
