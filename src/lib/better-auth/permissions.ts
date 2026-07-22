@@ -12,7 +12,7 @@ export const statement = {
   ...defaultStatements,
 
   user: userStatements,
-  company: ["create", "update", "delete"],
+  company: ["create", "update", "delete", "read"],
   assignment: ["assign", "unassign", "delete"],
 } as const;
 
@@ -33,5 +33,6 @@ export const sales = ac.newRole({
 
 export const agent = ac.newRole({});
 export type Permissions = {
+
   [K in keyof typeof ac.statements]?: (typeof ac.statements)[K][number][];
 };

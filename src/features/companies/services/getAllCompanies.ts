@@ -9,7 +9,7 @@ export async function getAllCompanies() {
   ).map(({ users, _count, ...company }) => ({
     ...company,
     numberOfLeads: _count.leads,
-    salesManager: users[0].user.name,
+    salesManager: users[0]?.user.name ?? null,
   }));
 
   return companies;

@@ -53,7 +53,6 @@ export const auth = betterAuth({
       ac,
       roles: { admin, head, sales, agent },
     }),
-    nextCookies(),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         if (process.env.NODE_ENV !== "production") {

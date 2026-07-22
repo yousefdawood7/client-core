@@ -15,7 +15,7 @@ export async function getCompany(id: string) {
       url: company.url,
       createdAt: company.createdAt,
       numberOfLeads: company._count.leads,
-      salesManager: company.users[0].user.name,
+      salesManager: company.users[0]?.user?.name ?? null,
     }
   );
 }
