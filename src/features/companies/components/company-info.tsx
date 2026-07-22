@@ -7,7 +7,7 @@ import { DataTable } from "@/components/data-table";
 import FormDialog from "@/components/FormDialog";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/ui/form-field";
-import { Input } from "@/components/ui/input";
+import SearchInput from "@/components/ui/search-input";
 import {
   CreateCompanySchema,
   createCompanySchema,
@@ -134,10 +134,10 @@ export default function CompanyInfo() {
           placeholder="Enter name of sales manager"
         />
       </FormDialog>
-      <div className="container mx-auto">
-        <Input type="text" placeholder="search" className="mt-4 w-80" />
+      <div className="container mx-auto flex flex-col gap-4">
+        <SearchInput />
         <DataTable columns={columns} data={data} />
-      </div>
+      </div> 
     </>
   );
 }

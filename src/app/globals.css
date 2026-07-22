@@ -91,6 +91,7 @@
   --destructive: oklch(0.5095 0.2086 28.5130);
   --border: oklch(0.9276 0.0058 264.5313);
   --input: oklch(0.9276 0.0058 264.5313);
+  --role: oklch(0.4878 0.2432 264.4045);
   --ring: oklch(0.4878 0.2432 264.4045);
   --chart-1: oklch(0.4878 0.2432 264.4045);
   --chart-2: oklch(0.6320 0.1860 147.3695);
@@ -147,6 +148,7 @@
   --destructive: oklch(0.6539 0.1926 25.1437);
   --border: oklch(0.3731 0.0343 260.1694);
   --input: oklch(0.2784 0.0335 257.6720);
+  --role: oklch(0.9846 0.0017 247.8389);
   --ring: oklch(0.5834 0.2305 277.0676);
   --chart-1: oklch(0.5834 0.2305 277.0676);
   --chart-2: oklch(0.7289 0.2119 147.8222);
@@ -188,10 +190,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
   }
+
   html {
     @apply font-sans;
   }

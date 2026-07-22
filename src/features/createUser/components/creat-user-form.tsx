@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 import { FieldGroup, FieldSet } from "@/components/ui/field";
 import { authClient } from "@/lib/better-auth/auth-client";
 
+import FormField from "../../../components/ui/form-field";
+import SelectField from "../../../components/ui/select-field";
 import {
   createUserDefaultValues,
   type CreateUserSchema,
   createUserSchema,
-} from "../features/profile/schemas";
-import FormField from "./ui/form-field";
+} from "./schemas";
 
 export default function CreateUserForm() {
   const methods = useForm<CreateUserSchema>({
@@ -26,6 +27,7 @@ export default function CreateUserForm() {
       name: data.name,
       email: data.email,
       password: data.password,
+      role:data.role,
 
       fetchOptions: {
         onSuccess: () => {
@@ -47,7 +49,7 @@ export default function CreateUserForm() {
     <FormProvider {...methods}>
       <form
         onSubmit={methods.handleSubmit(onSubmit)}
-        className="mx-auto w-full max-w-4xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm"
+        className="mx-auto w-full max-w-4xl rounded-2xl border border-border bg-card text-card-foreground p-8 shadow-sm"
       >
         <FieldSet>
           <FieldGroup className="space-y-4">
@@ -73,11 +75,15 @@ export default function CreateUserForm() {
               placeholder="Enter Your Password"
             />
 
-            <FormField
-              name="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              placeholder="Confirm Your Password"
+            <SelectField
+              name="role"
+              label="Role"
+              placeholder="Select Role"
+              options={[
+                { label: "Admin", value: "admin" },
+                { label: "Head", value: "head" },
+                { label: "Sales", value: "sales" },
+              ]}
             />
           </FieldGroup>
         </FieldSet>
@@ -86,7 +92,7 @@ export default function CreateUserForm() {
           <Button
             type="submit"
             disabled={methods.formState.isSubmitting}
-            className="h-11 rounded-xl bg-blue-600 px-6 text-white hover:bg-blue-700"
+            className="h-11 rounded-xl bg-primary text-primary-foreground hover:opacity-90 cursor-pointer"
           >
             {methods.formState.isSubmitting ? "Creating..." : "Create User"}
           </Button>
@@ -94,7 +100,7 @@ export default function CreateUserForm() {
           <Button
             type="button"
             variant="outline"
-            className="h-11 rounded-xl border-gray-300 px-6"
+            className="h-11 rounded-xl border-border text-secondary-foreground px-6 cursor-pointer"
             onClick={() => methods.reset()}
           >
             Cancel
