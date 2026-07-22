@@ -12,7 +12,6 @@ import {
   User,
   Users,
 } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -67,10 +66,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="inset" className="border-r bg-sidebar">
       <SidebarHeader className="border-b p-2 transition-all duration-300">
-        <Link
-          href="/dashboard"
-          className="flex h-12 items-center rounded-xl px-2 transition-all duration-300 hover:bg-sidebar-accent"
-        >
+        <Link href="/dashboard" className="flex h-12 items-center">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
             <Building2 className="size-5" />
           </div>
@@ -91,21 +87,21 @@ export function AppSidebar() {
 
             return (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton
-                  tooltip={item.title}
-                  isActive={pathname === item.href}
-                  className="h-11 rounded-xl "
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-3 overflow-hidden"
                 >
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-3 overflow-hidden"
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    isActive={pathname === item.href}
+                    className="h-11 rounded-xl cursor-pointer"
                   >
                     <Icon className="size-5 shrink-0" />
                     <span className="truncate transition-all duration-200 group-data-[collapsible=icon]:hidden">
                       {item.title}
                     </span>
-                  </Link>
-                </SidebarMenuButton>
+                  </SidebarMenuButton>
+                </Link>
               </SidebarMenuItem>
             );
           })}

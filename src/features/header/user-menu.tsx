@@ -21,7 +21,7 @@ export default function UserMenu() {
   return (
     <div className="flex items-center gap-4">
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger className="cursor-pointer">
           <div className="flex h-auto items-center gap-3 px-2">
             <Avatar className="h-9 w-9">
               <AvatarFallback>{user?.name.slice(0, 2)}</AvatarFallback>
@@ -41,9 +41,7 @@ export default function UserMenu() {
             <DropdownMenuItem>profile</DropdownMenuItem>
           </Link>
 
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-
-          <DropdownMenuItem className="text-red-500" onClick={signOut}>
+          <DropdownMenuItem className="text-chart-5" onClick={signOut}>
             Logout
           </DropdownMenuItem>
         </DropdownMenuContent>

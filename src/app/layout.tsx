@@ -3,6 +3,7 @@ import { Inter, Roboto } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import { ThemeToggle } from "@/components/ui/them-toggle";
 
 const fontSans = Inter({
   variable: "--font-sans",
@@ -29,6 +30,9 @@ export default function RootLayout({
       >
         <ThemeProvider>
           {children}
+          <div className="fixed right-6 bottom-6 z-50">
+            <ThemeToggle />
+          </div>
           <Toaster />
         </ThemeProvider>
       </body>
