@@ -1,4 +1,3 @@
-import { Prisma } from "@generated/prisma";
 
 export const historyPipeline = {
   orderBy: {
@@ -15,4 +14,4 @@ export const historyPipeline = {
       },
     },
   },
-} satisfies Prisma.HistoryFindManyArgs;
+} as const

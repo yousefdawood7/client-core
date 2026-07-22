@@ -1,8 +1,8 @@
 "use server";
 import { Prisma } from "@generated/prisma";
 import { Action } from "@generated/prisma";
-import { prisma } from "@/lib/prisma";
 import { historyPipeline } from "@/features/audit-logs/utils/history.pipeline";
+import { prisma } from "@/lib/prisma";
 
 interface GetHistoryLogsInput {
   userId?: string;
@@ -75,4 +75,3 @@ export async function getHistoryLogs(options?: GetHistoryLogsInput) {
     offset,
   };
 }
-

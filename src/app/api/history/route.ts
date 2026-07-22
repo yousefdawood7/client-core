@@ -5,18 +5,13 @@ import {
   handleSuccessResponse,
 } from "@/lib/better-auth/handleResponse";
 import { isAuthenticated } from "@/lib/better-auth/isAuthenticated";
+import { tryCatch, validateZodSchema } from "@/lib/utils";
 
 import { getQuerySchema, postBodySchema } from "./schemas";
 
 export async function GET(req: Request) {
-  const url = new URL(req.url);
-  const result = getQuerySchema.safeParse({
-    userId: url.searchParams.get("userId"),
-    search: url.searchParams.get("search"),
-    action: url.searchParams.get("action"),
-    limit: url.searchParams.get("limit"),
-    offset: url.searchParams.get("offset"),
-  });
+   const url = new URL(req.url);
+  const result = getQuerySchema.safeParse(Object.fromEntries(url.searchParams.entries()));
 
   if (!result.success) {
     return handleErrorResponse({
@@ -54,35 +49,35 @@ export async function POST(req: Request) {
       message: "You have no access to companies, please log",
     });
 
-  try {
-    const body = await req.json();
-    const result = postBodySchema.safeParse(body);
+  const { data: body } = await tryCatch(req.json());
 
-    if (!result.success) {
-      return handleErrorResponse({
-        statusCode: 400,
-        message: "Invalid history log payload",
-      });
-    }
+  const result = validateZodSchema(body, postBodySchema);
 
-    const { action, entity, oldValue, newValue } = result.data;
+  if (result instanceof Response) {
+    return result;
+  }
 
-    const historyLog = await createHistoryLog({
+  const { action, entity, oldValue, newValue } = result;
+
+  const { data: historyLog, error } = await tryCatch(
+    createHistoryLog({
       action,
       entity,
       oldValue,
       newValue,
-    });
+    }),
+  );
 
-    return handleSuccessResponse({
-      statusCode: 201,
-      message: "History log created successfully",
-      data: historyLog as unknown as Record<string, unknown>,
-    });
-  } catch (e) {
+  if (error) {
     return handleErrorResponse({
       statusCode: 400,
-      message: (e as Error).message,
+      message: (error as Error).message || "Failed to create history log",
     });
   }
+
+  return handleSuccessResponse({
+    statusCode: 201,
+    message: "History log created successfully",
+    data: historyLog as unknown as Record<string, unknown>,
+  });
 }
