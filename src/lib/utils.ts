@@ -24,7 +24,7 @@ export const handleZodErrors = function (zodError: z.ZodError) {
   const fieldErrorsObject = z.flattenError(zodError).fieldErrors as {
     [key: string]: string[];
   };
-  
+
   for (const key in fieldErrorsObject) {
     errorObjects[key] =
       fieldErrorsObject[key]!.length > 1

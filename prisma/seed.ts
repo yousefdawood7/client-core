@@ -33,7 +33,13 @@ import { admin as adminPlugin } from "better-auth/plugins";
 
 import "dotenv/config";
 import { Action, PrismaClient, Status } from "../generated/prisma";
-import { ac, admin, head, sales, agent } from "../src/lib/better-auth/permissions";
+import {
+  ac,
+  admin,
+  agent,
+  head,
+  sales,
+} from "../src/lib/better-auth/permissions";
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
@@ -72,10 +78,10 @@ async function createUser({
   // Matches the roles registered with the admin plugin in auth.ts.
   // Leave undefined for plain "agent" users (defaults to better-auth's
   // built-in "user" role).
-  role?: "admin" | "head" | "sales" | "agent" | null;
+  role?: "admin" | "head" | "sales" | "agent";
 }) {
   const { user } = await seedAuth.api.createUser({
-    body: { email, password, name, role: role || undefined },
+    body: { email, password, name, role },
   });
 
   // auth.api.createUser doesn't mark the email verified; seeded demo
@@ -112,7 +118,7 @@ async function main() {
   // The 4 "quick login" demo profiles shown on the login screen
   // (src/features/auth/constants.ts -> QUICK_PROFILES) plus a couple of
   // extra teammates so the data set isn't razor-thin.
-  const adminUser = await createUser({
+  const admin = await createUser({
     name: "Admin",
     email: "admin@company.com",
     password: "adminpassword123",
@@ -144,27 +150,27 @@ async function main() {
     name: "Alex",
     email: "alex@crmpro.com",
     password: "alexpassword123",
-    role: "agent",
+    role: "agent", // agent
   });
 
   const priya = await createUser({
     name: "Priya Patel",
     email: "priya@crmpro.com",
     password: "priyapassword123",
-    role: "agent",
+    role: "agent", // agent
   });
 
   const jordan = await createUser({
     name: "Jordan Lee",
     email: "jordan@crmpro.com",
     password: "jordanpassword123",
-    role: "agent",
+    role: "agent", // agent
   });
 
   const agents = [alex, priya, jordan];
 
   console.log(
-    `Created ${[adminUser, david, sarah, marcus, alex, priya, jordan].length} users`,
+    `Created ${[admin, david, sarah, marcus, alex, priya, jordan].length} users`,
   );
 
   // -- Companies -----------------------------------------------------
@@ -194,7 +200,7 @@ async function main() {
   for (const company of companies) {
     const teamAgents = [randomFrom(agents), randomFrom(agents)];
     const memberIds = new Set([
-      adminUser.id,
+      admin.id,
       david.id,
       company.manager.id,
       ...teamAgents.map((a) => a.id),

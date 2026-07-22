@@ -49,6 +49,9 @@ model UserCompanies {
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@id([userId, companyId])
   @@map("user_companies")
 }
@@ -56,11 +59,15 @@ model UserCompanies {
 model Company {
   id          String          @id @default(uuid())
   name        String
+  url         String?
   userId      String?
   users       UserCompanies[]
   leads       Lead[]
   assignments Assignment[]
   user        User?           @relation("UserManagedCompanies", fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("company")
 }
@@ -73,6 +80,9 @@ model Lead {
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   agent     User?   @relation("AgentLeads", fields: [agentId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("lead")
 }
 
@@ -84,7 +94,7 @@ model History {
   newValue  String
   userId    String
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt DateTime @updatedAt
 
   @@map("history")
 }
@@ -96,16 +106,18 @@ enum Action {
 }
 
 model Assignment {
-  id               String   @id @default(uuid())
+  id               String  @id @default(uuid())
   companyId        String
   assignmentUserId String
   receivedUserId   String
   userId           String
-  company          Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  assignedUser     User     @relation("AssignedUser", fields: [assignmentUserId], references: [id])
-  receivedUser     User     @relation("ReceivedUser", fields: [receivedUserId], references: [id])
-  creatorUser      User     @relation("CreatorUser", fields: [userId], references: [id])
-  createdAt        DateTime @default(now())
+  company          Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  assignedUser     User    @relation("AssignedUser", fields: [assignmentUserId], references: [id])
+  receivedUser     User    @relation("ReceivedUser", fields: [receivedUserId], references: [id])
+  creatorUser      User    @relation("CreatorUser", fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("assignments")
 }
