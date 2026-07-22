@@ -19,7 +19,7 @@ export default async function ProfilePage() {
       <div className="flex flex-col gap-6">
         <Card>
           <CardContent className="flex flex-col gap-6 py-6">
-            <ProfileInfoCard name={user?.name} role={user?.role} />
+            <ProfileInfoCard name={user?.name} role={user?.role} image={user?.image} />
             <Separator className="bg-border/40" />
             <UpdateInfoForm name={user?.name} email={user?.email} />
           </CardContent>

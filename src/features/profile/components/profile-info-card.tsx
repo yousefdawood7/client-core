@@ -1,30 +1,23 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { getInitials } from "@/lib/utils";
 
 export default function ProfileInfoCard({
   name,
   role,
+  image,
 }: {
   name?: string | null;
   role?: string | null;
+  image?: string | null;
 }) {
-  const initials = name
-    ? name
-        .trim()
-        .split(/\s+/)
-        .map((n) => n.charAt(0))
-        .join("")
-        .slice(0, 2)
-        .toUpperCase() || "U"
-    : "U";
-
   return (
     <div className="flex items-center gap-4">
       {/* Avatar Badge */}
       <Avatar className="h-14 w-14 text-lg font-bold">
-        <AvatarImage src="" alt={name || ""} />
+        <AvatarImage src={image || undefined} alt={name || ""} />
         <AvatarFallback className="bg-emerald-600 text-white font-bold">
-          {initials}
+          {getInitials(name)}
         </AvatarFallback>
       </Avatar>
 
@@ -40,3 +33,4 @@ export default function ProfileInfoCard({
     </div>
   );
 }
+
