@@ -1,14 +1,14 @@
 import { NextRequest } from "next/server";
-import { getCompany } from "@/features/companies/services/getCompany";
+import { getCompany } from "@/features/companies/services/Companies/getCompany";
 import {
   handleErrorResponse,
   handleSuccessResponse,
 } from "@/lib/better-auth/handleResponse";
 import { getServerSession, isAuthenticated } from "@/lib/better-auth/isAuthenticated";
 
-import { updateCompany } from "@/features/companies/services/updateCompany";
+import { updateCompany } from "@/features/companies/services/Companies/updateCompany";
 
-import { deleteCompany } from "@/features/companies/services/deleteCompany";
+import { deleteCompany } from "@/features/companies/services/Companies/deleteCompany";
 import { checkServerRoles } from "@/lib/better-auth/checkServerRoles";
 
 export async function GET(
@@ -58,7 +58,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const session = await isAuthenticated()
+  const session = await isAuthenticated();
 
   // prettier-ignore
   if (!(session) && false /*FOR TESTING*/)
@@ -70,12 +70,10 @@ export async function PATCH(
       permissions: { company: ["update"] },
     });
 
-    if (!hasPermission && false /*FOR TESTING*/) {
-      return handleErrorResponse({
-        statusCode: 403,
-        message: "Forbidden: You don't have permission to delete companies",
-      });
-    }
+    return handleErrorResponse({
+      statusCode: 403,
+      message: "Forbidden: You don't have permission to delete companies",
+    });
 
   }
 

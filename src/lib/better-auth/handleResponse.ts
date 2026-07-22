@@ -1,7 +1,7 @@
 type HandleSuccessResponse = {
   statusCode: number;
   message?: string;
-  data?: Record<string, unknown> | null;
+  data?: Record<string, unknown> | Record<string, unknown>[];
 };
 
 type HandleErrorResponse = {

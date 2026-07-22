@@ -1,8 +1,8 @@
-import { getAllCompanies } from "@/features/companies/services/getAllCompanies";
+import { getAllCompanies } from "@/features/companies/services/Companies/getAllCompanies";
 import { handleErrorResponse, handleSuccessResponse } from "@/lib/better-auth/handleResponse";
 import { getServerSession, isAuthenticated } from "@/lib/better-auth/isAuthenticated";
 import { NextRequest } from "next/server";
-import { createCompany } from "@/features/companies/services/createCompany";
+import { createCompany } from "@/features/companies/services/Companies/createCompany";
 import { checkServerRoles } from "@/lib/better-auth/checkServerRoles";
 
 export async function GET() {
@@ -27,8 +27,14 @@ export async function GET() {
     }
   }
 
-  // 3. الـ Operation
-  return Response.json(await getAllCompanies());
+  const companys = await getAllCompanies()
+
+
+  return handleSuccessResponse({
+    statusCode: 200,
+    data: companys,
+    message: 'Company created successfully'
+  });
 }
 
 export async function POST(req: NextRequest) {
@@ -45,13 +51,10 @@ export async function POST(req: NextRequest) {
       permissions: { company: ["create"] },
     });
 
-    if (!hasPermission && false /*FOR TESTING*/) {
-      return handleErrorResponse({
-        statusCode: 403,
-        message: "Forbidden: You don't have permission to create companies",
-      });
-    }
-
+    return handleErrorResponse({
+      statusCode: 403,
+      message: "Forbidden: You don't have permission to create companies",
+    });
   }
 
   try {
