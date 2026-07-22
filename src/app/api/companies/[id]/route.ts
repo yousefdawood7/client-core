@@ -78,6 +78,10 @@ export async function PATCH(
     updateCompany(id, validatedBody),
   );
 
+  // prettier-ignore
+  if (validatedBody instanceof Response)
+    return validatedBody;
+
   if (error && "code" in error && error.code === "P2025")
     return handleErrorResponse({
       statusCode: 404,
