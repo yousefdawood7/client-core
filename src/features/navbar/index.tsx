@@ -1,7 +1,5 @@
 import HeaderBreadcrumb from "./header-breadcrumb";
-import Notification from "./Notification";
 import UserMenu from "./user-menu";
-import SearchInput from "../../components/ui/search-input";
 
 export default function Navbar() {
   return (
@@ -9,8 +7,8 @@ export default function Navbar() {
       <HeaderBreadcrumb />
 
       <div className="flex items-center gap-4">
-        <SearchInput />
-        <Notification />
+        {/* <SearchInput /> */}
+        {/* <Notification /> */}
         <UserMenu />
       </div>
     </header>
