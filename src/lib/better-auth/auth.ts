@@ -10,7 +10,7 @@ import { resend } from "@/lib/resend";
 
 import { env } from "../env";
 import { prisma } from "../prisma";
-import { ac, admin, head, sales } from "./permissions";
+import { ac, admin, agent, head, sales } from "./permissions";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -51,9 +51,8 @@ export const auth = betterAuth({
   plugins: [
     adminPlugin({
       ac,
-      roles: { admin, head, sales },
+      roles: { admin, head, sales, agent },
     }),
-    nextCookies(),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         if (process.env.NODE_ENV !== "production") {
