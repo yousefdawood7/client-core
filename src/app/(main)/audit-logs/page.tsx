@@ -2,6 +2,7 @@
 
 import { DataTable } from "@/components/data-table";
 import PageContainer from "@/components/page-container";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { AuditLogsFilters } from "@/features/audit-logs/components/audit-logs-filters";
@@ -22,6 +23,9 @@ export default function AuditLogsPage() {
     setPage,
     totalPages,
     limit,
+    isError,
+    error,
+    refetch,
   } = useAuditLogs();
 
   return (
@@ -39,7 +43,22 @@ export default function AuditLogsPage() {
             resetPage={() => setPage(1)}
           />
 
-          {loading ? (
+          {isError ? (
+            <div className="flex flex-col items-center justify-center py-20 gap-3 border border-destructive/20 bg-destructive/5 rounded-lg text-destructive">
+              <span className="text-sm font-medium">Failed to load audit logs</span>
+              <span className="text-xs text-muted-foreground">
+                {error instanceof Error ? error.message : "An unexpected error occurred."}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => refetch()}
+                className="mt-2 text-foreground"
+              >
+                Try Again
+              </Button>
+            </div>
+          ) : loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-3 border rounded-lg">
               <Spinner className="h-6 w-6 text-primary" />
               <span className="text-xs text-muted-foreground">

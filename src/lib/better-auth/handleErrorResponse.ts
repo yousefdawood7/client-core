@@ -14,7 +14,7 @@ export function handleErrorResponse({
       statusCode,
       message,
       status: statusCode < 500 ? "fail" : "error",
-      ...(details && {}),
+      ...(details && { details }),
     },
     { status: statusCode },
   );

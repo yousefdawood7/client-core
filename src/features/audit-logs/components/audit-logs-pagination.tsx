@@ -35,6 +35,7 @@ export function AuditLogsPagination({
           size="icon-sm"
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page === 1 || loading}
+          aria-label="Previous page"
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
@@ -68,6 +69,7 @@ export function AuditLogsPagination({
           size="icon-sm"
           onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
           disabled={page >= totalPages || loading}
+          aria-label="Next page"
         >
           <ChevronRight className="h-4 w-4" />
         </Button>

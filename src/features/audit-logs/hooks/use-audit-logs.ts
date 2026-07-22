@@ -24,7 +24,7 @@ export function useAuditLogs() {
     setPage(1);
   };
 
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading, isFetching, error, isError, refetch } = useQuery({
     queryKey: ["audit-logs", { actionFilter, debouncedSearch, page }],
     queryFn: async () => {
       const result = await fetchClient<{
@@ -69,5 +69,8 @@ export function useAuditLogs() {
     setPage,
     totalPages,
     limit,
+    error,
+    isError,
+    refetch,
   };
 }

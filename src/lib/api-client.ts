@@ -5,7 +5,7 @@ export async function fetchClient<T>(
     headers?: HeadersInit;
     method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
     body?: unknown;
-  }
+  },
 ): Promise<T> {
   const { params, headers, method = "GET", body } = options || {};
 
@@ -27,12 +27,14 @@ export async function fetchClient<T>(
       "Content-Type": "application/json",
       ...headers,
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: body === undefined ? undefined : JSON.stringify(body),
   });
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || `Request failed with status ${res.status}`);
+    throw new Error(
+      errorData.message || `Request failed with status ${res.status}`,
+    );
   }
 
   return res.json() as Promise<T>;

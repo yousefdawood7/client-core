@@ -9,7 +9,24 @@ interface CreateHistoryLogInput {
   entity: string;
   oldValue?: string | null;
   newValue: string;
-  userId?: string;
+}
+
+export async function createHistoryLogInternal({
+  action,
+  entity,
+  oldValue,
+  newValue,
+  userId,
+}: CreateHistoryLogInput & { userId: string }) {
+  return await prisma.history.create({
+    data: {
+      action,
+      entity,
+      oldValue: oldValue || null,
+      newValue,
+      userId,
+    },
+  });
 }
 
 export async function createHistoryLog({
@@ -17,30 +34,21 @@ export async function createHistoryLog({
   entity,
   oldValue,
   newValue,
-  userId,
 }: CreateHistoryLogInput) {
-  let finalUserId = userId;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  if (!finalUserId) {
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-
-    if (!session?.user?.id) {
-      throw new Error("You must be logged in to perform this action.");
-    }
-
-    finalUserId = session.user.id;
+  if (!session?.user?.id) {
+    throw new Error("You must be logged in to perform this action.");
   }
 
-  return await prisma.history.create({
-    data: {
-      action,
-      entity,
-      oldValue: oldValue || null,
-      newValue,
-      userId: finalUserId,
-    },
+  return await createHistoryLogInternal({
+    action,
+    entity,
+    oldValue,
+    newValue,
+    userId: session.user.id,
   });
 }
 

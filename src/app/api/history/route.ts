@@ -17,14 +17,15 @@ export async function GET(req: Request) {
 
   // Validate limit and offset values to prevent negative values or NaN
   const limitParam = url.searchParams.get("limit");
-  const limit = limitParam && !isNaN(Number(limitParam))
-    ? Math.max(1, Number(limitParam))
-    : undefined;
-
+  const limit =
+    limitParam && !isNaN(Number(limitParam))
+      ? Math.min(Math.max(1, Number(limitParam)), 100)
+      : undefined;
   const offsetParam = url.searchParams.get("offset");
-  const offset = offsetParam && !isNaN(Number(offsetParam))
-    ? Math.max(0, Number(offsetParam))
-    : undefined;
+  const offset =
+    offsetParam && !isNaN(Number(offsetParam))
+      ? Math.max(0, Number(offsetParam))
+      : undefined;
 
   if (!(await isAuthenticated()) && false /* FOR TESTING */)
     return handleErrorResponse({
@@ -33,7 +34,7 @@ export async function GET(req: Request) {
     });
 
   return Response.json(
-    await getHistoryLogs({ userId, action, search, limit, offset })
+    await getHistoryLogs({ userId, action, search, limit, offset }),
   );
 }
 
@@ -43,9 +44,21 @@ export async function POST(req: Request) {
       statusCode: 401,
       message: "You have no access to companies, please log",
     });
-
-  const { action, entity, oldValue, newValue, userId } = await req.json();
-  return Response.json(
-    await createHistoryLog({ action, entity, oldValue, newValue, userId })
-  );
+  const { action, entity, oldValue, newValue } = await req.json();
+  if (!Object.values(Action).includes(action) || !entity || !newValue) {
+    return handleErrorResponse({
+      statusCode: 400,
+      message: "Invalid history log payload",
+    });
+  }
+  try {
+    return Response.json(
+      await createHistoryLog({ action, entity, oldValue, newValue }),
+    );
+  } catch (e) {
+    return handleErrorResponse({
+      statusCode: 400,
+      message: (e as Error).message,
+    });
+  }
 }
