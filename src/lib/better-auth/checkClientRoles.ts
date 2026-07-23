@@ -10,5 +10,5 @@ export async function checkClientRoles({
     permissions,
   });
 
-  return data?.success; //! undefined if there is any loading state
+  return data?.success; //! will be undefined if it's still loading
 }

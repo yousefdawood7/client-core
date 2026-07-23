@@ -1,14 +1,14 @@
 "use client";
 
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import FormField from "@components/ui/form-field";
+import SelectField from "@components/ui/select-field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { FieldGroup, FieldSet } from "@/components/ui/field";
 import { authClient } from "@/lib/better-auth/auth-client";
 
-import FormField from "../../../components/ui/form-field";
-import SelectField from "../../../components/ui/select-field";
 import {
   createUserDefaultValues,
   type CreateUserSchema,
@@ -19,7 +19,6 @@ export default function CreateUserForm() {
   const methods = useForm<CreateUserSchema>({
     resolver: zodResolver(createUserSchema),
     defaultValues: createUserDefaultValues,
-    mode: "onTouched",
   });
 
   const onSubmit: SubmitHandler<CreateUserSchema> = async (data) => {
@@ -27,7 +26,7 @@ export default function CreateUserForm() {
       name: data.name,
       email: data.email,
       password: data.password,
-      role:data.role,
+      role: data.role,
 
       fetchOptions: {
         onSuccess: () => {
