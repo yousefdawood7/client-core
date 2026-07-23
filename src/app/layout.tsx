@@ -33,7 +33,7 @@ export default function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             {children}
-            <div className="fixed right-6 bottom-6 z-50">
+            <div className="fixed right-6 bottom-20 z-50">
               <ThemeToggle />
             </div>
             <Toaster />
